@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_color">
+
+    <!--<ImageView-->
+    <!--android:id="@+id/calendarToJournalButton"-->
+    <!--android:src="@drawable/add_journal_icon"-->
+    <!--android:gravity="left"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:paddingBottom="10dip">-->
+    <!--</ImageView>-->
+
+
+    <Button
+        android:id="@+id/selected_date"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:background="@drawable/button_blue_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </Button>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/prevMonth"
+            android:src="@drawable/left_cal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </ImageView>
+        <Button
+            android:id="@+id/currentMonth"
+            android:layout_weight="0.6"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:background="@drawable/blue_bg_without_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+        <ImageView
+            android:id="@+id/nextMonth"
+            android:src="@drawable/right_cal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </ImageView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--<ImageView-->
+            <!--android:id="@+id/calendarheader"-->
+            <!--android:src="@drawable/blue_bg_with_text"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+        <!--</ImageView>-->
+        <GridView
+            android:id="@+id/calendarheader"
+            android:numColumns="7"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+            android:layout_marginTop="25px">
+        </GridView>
+    </LinearLayout>
+
+
+    <GridView
+        android:id="@+id/calendar"
+        android:numColumns="7"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12px">
+    </GridView>
+
+</LinearLayout>
