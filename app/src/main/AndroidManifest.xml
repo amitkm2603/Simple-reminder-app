@@ -19,6 +19,9 @@
         <activity
             android:name=".Add_task"
             android:label="Simple reminder app" />
+        <activity
+            android:name=".Task_list"
+            android:label="Simple reminder app" />
     </application>
 
 </manifest>
