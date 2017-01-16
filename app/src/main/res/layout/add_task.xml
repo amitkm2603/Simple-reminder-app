@@ -3,19 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ff1ba1ee"
+    android:id="@+id/add_task_layout"
     >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="aaaaa"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#fff"
-        android:id="@+id/add_task_date"
-        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,31 +55,20 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="#fff"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:id="@+id/body_layout_id">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Priority"
         android:textSize="20sp"
-         android:textColor="#000"
+        android:textColor="#000"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
         android:id="@+id/prio_txt"
         />
-
-     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:id="@+id/add_task_priority"
-        android:hint="Enter Text"
-        android:textColorHint="#fff"
-        android:layout_alignParentRight="true"
-        android:layout_alignBottom="@+id/prio_txt" />
 
 
         <TextView
@@ -101,20 +79,9 @@
             android:textSize="20sp"
             android:textColor="#000"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:id="@+id/set_reminder_txt"
             />
-
-        <CheckBox
-            android:text=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/set_reminder_txt"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="30dp"
-            android:layout_below="@+id/add_task_priority"
-            android:layout_alignParentRight="true"
-            android:id="@+id/checkBox" />
 
 
         <RelativeLayout
@@ -126,7 +93,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:background="#fff"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="30dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -135,8 +102,9 @@
                 android:textSize="20sp"
                 android:textColor="#000"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:id="@+id/task_alarm_txt"
+                android:visibility="invisible"
                 />
 
 
@@ -148,8 +116,10 @@
                 android:textSize="20sp"
                 android:textColor="#000"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:id="@+id/set_reminder_date_txt"
+                android:visibility="visible"
+                android:textStyle="normal|bold"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -158,18 +128,56 @@
                 android:textSize="20sp"
                 android:textColor="#000"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignBottom="@+id/set_reminder_date_txt"
                 android:id="@+id/set_reminder_time_txt"
-                />
+                android:visibility="visible"
+                android:textStyle="normal|bold" />
 
         </RelativeLayout>
+
+        <EditText
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:inputType="number"
+           android:ems="5"
+           android:maxLength="2"
+           android:textSize="20sp"
+            android:gravity="center"
+            android:id="@+id/add_task_priority"
+           android:hint="Enter Text"
+           android:textColorHint="#fff"
+            android:layout_alignBottom="@+id/prio_txt"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="42dp"
+            android:layout_marginEnd="42dp" />
+
+        <CheckBox
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_task_reminder_checkbox"
+            android:layout_alignBottom="@+id/set_reminder_txt"
+            android:layout_alignLeft="@+id/add_task_priority"
+            android:layout_alignStart="@+id/add_task_priority" />
 
 
     </RelativeLayout>
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="aaaaa"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:id="@+id/add_task_date"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

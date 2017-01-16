@@ -1,0 +1,189 @@
+TASK app.reminder.com.simplereminderapp id=229
+  ACTIVITY app.reminder.com.simplereminderapp/.Add_task 7e46ce7 pid=17852
+    Local Activity 22458d2e State:
+      mResumed=true mStopped=false mFinished=false
+      mLoadersStarted=true
+      mChangingConfigurations=false
+      mCurrentConfig={1.0 310mcc260mnc en_US ldltr sw360dp w360dp h567dp 480dpi nrml port finger -keyb/v/h -nav/h s.5}
+    FragmentManager misc state:
+      mActivity=app.reminder.com.simplereminderapp.Add_task@22458d2e
+      mContainer=android.app.Activity$1@283550cf
+      mCurState=5 mStateSaved=false mDestroyed=false
+    ViewRoot:
+      mAdded=true mRemoved=false
+      mConsumeBatchedInputScheduled=false
+      mConsumeBatchedInputImmediatelyScheduled=false
+      mPendingInputEventCount=0
+      mProcessInputEventsScheduled=false
+      mTraversalScheduled=false
+      android.view.ViewRootImpl$NativePreImeInputStage: mQueueLength=0
+      android.view.ViewRootImpl$ImeInputStage: mQueueLength=0
+      android.view.ViewRootImpl$NativePostImeInputStage: mQueueLength=0
+    Choreographer:
+      mFrameScheduled=false
+      mLastFrameTime=22704399 (391 ms ago)
+    View Hierarchy:
+      com.android.internal.policy.impl.PhoneWindow$DecorView{2c6caa5c V.E..... R....... 0,0-1080,1920}
+        android.widget.LinearLayout{2554c165 V.E..... ........ 0,0-1080,1776}
+          android.view.ViewStub{31214e3a G.E..... ......I. 0,0-0,0 #102036e}
+          android.widget.FrameLayout{be02aeb V.E..... ........ 0,75-1080,1776 #1020002 android:id/content}
+            android.widget.RelativeLayout{38481048 V.E..... ........ 0,0-1080,1701 #7f0c004f app:id/add_task_layout}
+              android.widget.TextView{b550ee1 V.ED..C. ........ 60,163-98,244 #7f0c0051 app:id/add_task_close}
+              android.widget.TextView{20c61406 V.ED..C. ........ 872,163-1020,244 #7f0c0052 app:id/add_task_save}
+              android.widget.EditText{11148ac7 VFED..CL .F...... 60,343-1020,467 #7f0c0053 app:id/add_task_text}
+              android.widget.RelativeLayout{24f1e8f4 V.E..... ........ 0,527-1080,1701 #7f0c0054 app:id/body_layout_id}
+                android.widget.TextView{10b2b81d V.ED.... ........ 60,90-250,171 #7f0c0055 app:id/prio_txt}
+                android.widget.TextView{139f6a92 V.ED.... ........ 60,261-419,342 #7f0c0056 app:id/set_reminder_txt}
+                android.widget.RelativeLayout{2c450c63 V.E..... ........ 0,432-1080,1174 #7f0c0057 app:id/reminder_set_layout}
+                  android.widget.TextView{1abea060 V.ED.... ........ 60,90-323,171 #7f0c0058 app:id/task_alarm_txt}
+                  android.widget.TextView{2247b919 V.ED..C. ........ 60,261-378,342 #7f0c0059 app:id/set_reminder_date_txt}
+                  android.widget.TextView{35459dde V.ED..C. ........ 837,261-990,342 #7f0c005a app:id/set_reminder_time_txt}
+                android.widget.EditText{1c720bbf VFED..CL ........ 599,39-954,171 #7f0c005b app:id/add_task_priority}
+                android.widget.CheckBox{30dd628c VFED..C. ........ 599,246-695,342 #7f0c005c app:id/add_task_reminder_checkbox}
+              android.widget.TextView{691cdd5 V.ED.... ........ 395,60-685,133 #7f0c0050 app:id/add_task_date}
+        android.view.View{89b9ea V.ED.... ........ 0,0-1080,75 #102002f android:id/statusBarBackground}
+        android.view.View{2645a4db V.ED.... ........ 0,1776-1080,1920 #1020030 android:id/navigationBarBackground}
+    Looper (main, tid 1) {20441b78}
+      Message 0: { when=+97ms callback=android.widget.Editor$Blink target=android.widget.Editor$Blink }
+      (Total messages: 1, idling=false, quitting=false)
+
+  ACTIVITY app.reminder.com.simplereminderapp/.MainActivity 34342c91 pid=17852
+    Local Activity 21a72641 State:
+      mResumed=false mStopped=true mFinished=false
+      mLoadersStarted=false
+      mChangingConfigurations=false
+      mCurrentConfig={1.0 310mcc260mnc en_US ldltr sw360dp w360dp h567dp 480dpi nrml port finger -keyb/v/h -nav/h s.5}
+    FragmentManager misc state:
+      mActivity=app.reminder.com.simplereminderapp.MainActivity@21a72641
+      mContainer=android.app.Activity$1@342e7251
+      mCurState=3 mStateSaved=true mDestroyed=false
+    ViewRoot:
+      mAdded=true mRemoved=false
+      mConsumeBatchedInputScheduled=false
+      mConsumeBatchedInputImmediatelyScheduled=false
+      mPendingInputEventCount=0
+      mProcessInputEventsScheduled=false
+      mTraversalScheduled=false
+      android.view.ViewRootImpl$NativePreImeInputStage: mQueueLength=0
+      android.view.ViewRootImpl$ImeInputStage: mQueueLength=0
+      android.view.ViewRootImpl$NativePostImeInputStage: mQueueLength=0
+    Choreographer:
+      mFrameScheduled=false
+      mLastFrameTime=22704399 (396 ms ago)
+    View Hierarchy:
+      com.android.internal.policy.impl.PhoneWindow$DecorView{1a418ab6 I.E..... R....... 0,0-1080,1920}
+        android.widget.LinearLayout{24efb3b7 V.E..... ........ 0,0-1080,1776}
+          android.view.ViewStub{395b7724 G.E..... ......I. 0,0-0,0 #102036e}
+          android.widget.FrameLayout{1416e28d V.E..... ........ 0,75-1080,1776 #1020002 android:id/content}
+            android.widget.LinearLayout{cd39c42 V.E..... ........ 0,0-1080,1701}
+              android.widget.Button{cc1d453 VFED..C. ........ 75,0-1005,159 #7f0c005d app:id/selected_date}
+              android.widget.LinearLayout{86ae190 V.E..... ........ 0,159-1080,330}
+                android.widget.ImageView{2b9c1a89 V.ED..C. ........ 0,0-156,153 #7f0c005e app:id/prevMonth}
+                android.widget.Button{30833a8e VFED..C. ........ 156,0-933,171 #7f0c005f app:id/currentMonth}
+                android.widget.ImageView{3b8b62af V.ED..C. ........ 933,0-1080,141 #7f0c0060 app:id/nextMonth}
+              android.widget.LinearLayout{14c486bc V.E..... ........ 0,330-1080,499}
+                android.widget.GridView{2a22d645 VFED.VC. .F...... 0,37-1080,181 #7f0c0061 app:id/calendarheader}
+                  android.widget.LinearLayout{c7c719a V.E..... ........ 0,0-154,144}
+                    android.widget.Button{32b57acb VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                  android.widget.LinearLayout{26b152a8 V.E..... ........ 154,0-308,144}
+                    android.widget.Button{169f91c1 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                  android.widget.LinearLayout{3ca00d66 V.E..... ........ 308,0-462,144}
+                    android.widget.Button{171ef8a7 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                  android.widget.LinearLayout{1cf154 V.E..... ........ 462,0-616,144}
+                    android.widget.Button{18d288fd VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                  android.widget.LinearLayout{280f99f2 V.E..... ........ 616,0-770,144}
+                    android.widget.Button{12b87843 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                  android.widget.LinearLayout{3401cec0 V.E..... ........ 770,0-924,144}
+                    android.widget.Button{1a43b7f9 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                  android.widget.LinearLayout{1479633e V.E..... ........ 924,0-1078,144}
+                    android.widget.Button{33e0559f VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+              android.widget.GridView{89516ec VFED.VC. ........ 0,511-1080,1375 #7f0c0062 app:id/calendar}
+                android.widget.LinearLayout{3afedab5 V.E..... ........ 0,0-154,144}
+                  android.widget.Button{2224754a VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{267eacbb V.E..... ........ 154,0-308,144}
+                  android.widget.Button{1032b5d8 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{160f6d31 V.E..... ........ 308,0-462,144}
+                  android.widget.Button{3cbc9c16 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{22e15997 V.E..... ........ 462,0-616,144}
+                  android.widget.Button{25095784 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{11bcab6d V.E..... ........ 616,0-770,144}
+                  android.widget.Button{cde63a2 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{2e57f833 V.E..... ........ 770,0-924,144}
+                  android.widget.Button{338667f0 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{37859169 V.E..... ........ 924,0-1078,144}
+                  android.widget.Button{366317ee VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{98fe48f V.E..... ........ 0,144-154,288}
+                  android.widget.Button{3f82131c VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{fdcdb25 V.E..... ........ 154,144-308,288}
+                  android.widget.Button{2f6cc4fa VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{28b03aab V.E..... ........ 308,144-462,288}
+                  android.widget.Button{102b4508 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{3da504a1 V.E..... ........ 462,144-616,288}
+                  android.widget.Button{3c3236c6 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{1135d687 V.E..... ........ 616,144-770,288}
+                  android.widget.Button{2eb3a9b4 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{156c49dd V.E..... ........ 770,144-924,288}
+                  android.widget.Button{1b8af952 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{398f5423 V.E..... ........ 924,144-1078,288}
+                  android.widget.Button{23bbad20 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{2c68a6d9 V.E..... ........ 0,288-154,432}
+                  android.widget.Button{303b589e VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{6790f7f V.E..... ........ 154,288-308,432}
+                  android.widget.Button{1f7e7b4c VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{1b33d795 V.E..... ........ 308,288-462,432}
+                  android.widget.Button{330060aa VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{219249b V.E..... ........ 462,288-616,432}
+                  android.widget.Button{38be0038 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{30475811 V.E..... ........ 616,288-770,432}
+                  android.widget.Button{395bdd76 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{28db6f77 V.E..... ........ 770,288-924,432}
+                  android.widget.Button{2e6ee7e4 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{e38644d V.E..... ........ 924,288-1078,432}
+                  android.widget.Button{1d205b02 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{280d8c13 V.E..... ........ 0,432-154,576}
+                  android.widget.Button{18249e50 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{31b3f849 V.E..... ........ 154,432-308,576}
+                  android.widget.Button{10bd254e VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{2a3ad66f V.E..... ........ 308,432-462,576}
+                  android.widget.Button{313d4f7c VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{1b3ad005 V.E..... ........ 462,432-616,576}
+                  android.widget.Button{2c4a485a VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{d486a8b V.E..... ........ 616,432-770,576}
+                  android.widget.Button{2acde768 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{189d6781 V.E..... ........ 770,432-924,576}
+                  android.widget.Button{3f549026 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{1e512467 V.E..... ........ 924,432-1078,576}
+                  android.widget.Button{304e1214 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{2a37fabd V.E..... ........ 0,576-154,720}
+                  android.widget.Button{336988b2 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{3741a003 V.E..... ........ 154,576-308,720}
+                  android.widget.Button{b043b80 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{3fee85b9 V.E..... ........ 308,576-462,720}
+                  android.widget.Button{b637dfe VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{1a34395f V.E..... ........ 462,576-616,720}
+                  android.widget.Button{10318fac VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{9e8c475 V.E..... ........ 616,576-770,720}
+                  android.widget.Button{b757c0a VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{268d0c7b V.E..... ........ 770,576-924,720}
+                  android.widget.Button{5fdfa98 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{190e32f1 V.E..... ........ 924,576-1078,720}
+                  android.widget.Button{15f74ed6 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{3d5f557 V.E..... ........ 0,720-154,864}
+                  android.widget.Button{2b242844 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{b420d2d V.E..... ........ 154,720-308,864}
+                  android.widget.Button{8f18262 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{1e5a8ff3 V.E..... ........ 308,720-462,864}
+                  android.widget.Button{d5d84b0 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{3f5f4f29 V.E..... ........ 462,720-616,864}
+                  android.widget.Button{286962ae VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{1184384f V.E..... ........ 616,720-770,864}
+                  android.widget.Button{1a8e3bdc VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{cf4b4e5 V.E..... ........ 770,720-924,864}
+                  android.widget.Button{216cfbba VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+                android.widget.LinearLayout{1bf60a6b V.E..... ........ 924,720-1078,864}
+                  android.widget.Button{18b139c8 VFED..C. ........ 0,0-154,144 #7f0c0063 app:id/gridcell}
+        android.view.View{3bc0ba61 V.ED.... ........ 0,0-1080,75 #102002f android:id/statusBarBackground}
+        android.view.View{31df1986 V.ED.... ........ 0,1776-1080,1920 #1020030 android:id/navigationBarBackground}
+    Looper (main, tid 1) {20441b78}
+      Message 0: { when=+92ms callback=android.widget.Editor$Blink target=android.widget.Editor$Blink }
+      (Total messages: 1, idling=false, quitting=false)

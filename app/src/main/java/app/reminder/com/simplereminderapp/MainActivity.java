@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,15 +40,15 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
 
         Date date = new GregorianCalendar(2016, Calendar.NOVEMBER, 11).getTime();
-        draw_calender(date);
+        draw_calender(null);
 
     }
 
     public void draw_calender(Date date)
     {
-        setContentView(R.layout.calendar_view); //set the initial layout
-
         current_activity = this;
+
+        setContentView(R.layout.calendar_view); //set the initial layout
         //get the current year, month and calendar
         local_calendar = Calendar.getInstance(Locale.getDefault());
 
@@ -86,13 +87,13 @@ public class MainActivity extends Activity implements OnClickListener {
         header_adapter = new Draw_calendar_header(getApplicationContext(), R.id.gridcell);
         header_adapter.notifyDataSetChanged();
         calendar_header_view.setAdapter(header_adapter);
+
     }
 
     @Override
     public void onClick(View view_id) {
         //click handler with v = id of the btn
-        System.out.println(view_id);
-        ;
+
         if (view_id == prevMonth) {
             if (month < 1) {
                 month = 11;
@@ -119,6 +120,8 @@ public class MainActivity extends Activity implements OnClickListener {
             calendar_adapter.notifyDataSetChanged();
             calendar_view.setAdapter(calendar_adapter);
         }
+
+        System.out.println(view_id.getId());
     }
 
 }

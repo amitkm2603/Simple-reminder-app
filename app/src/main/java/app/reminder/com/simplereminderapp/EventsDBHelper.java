@@ -14,6 +14,12 @@ public class EventsDBHelper extends SQLiteOpenHelper
 {
     public static final String DATABASE_NAME = "Cal_tasks.db";
     public static  final String TASK_TABLE = "app_tasks";
+    public static final String TASK_DTTM = "task_dttm";
+    public static final String TASK_PRIORITY = "task_priority";
+    public static final String TASK_DESCRIPTION = "task_description";
+    public static final String TASK_REMINDER = "task_reminder";
+    public static final String TASK_REMINDER_DTTM = "task_reminder_dttm";
+    public static final String TASK_ID = "id";
 
     public EventsDBHelper(Context context) {
         super(context, DATABASE_NAME , null, 1);
@@ -32,15 +38,16 @@ public class EventsDBHelper extends SQLiteOpenHelper
     }
 
 
-    public boolean insertTask (String task_dttm, int task_priority, String task_description,
-                                String task_reminder,String task_reminder_dttm) {
+        public boolean insertTask(Task task)
+        {
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("task_dttm", task_dttm);
-        contentValues.put("task_priority", task_priority);
-        contentValues.put("task_description", task_description);
-        contentValues.put("task_reminder", task_reminder);
-        contentValues.put("task_reminder_dttm", task_reminder_dttm);
+        contentValues.put(TASK_DTTM, task.getTask_dttm());
+        contentValues.put(TASK_PRIORITY, task.getTask_priority());
+        contentValues.put(TASK_DESCRIPTION, task.getTask_description());
+        contentValues.put(TASK_REMINDER, task.getTask_reminder());
+        contentValues.put(TASK_REMINDER_DTTM, task.getTask_reminder_dttm());
         db.insert(TASK_TABLE, null, contentValues);
         return true;
     }
@@ -57,18 +64,19 @@ public class EventsDBHelper extends SQLiteOpenHelper
         return numRows;
     }
 
-    public boolean updateTask (Integer id, String task_dttm, int task_priority, String task_description,
-                               String task_reminder,String task_reminder_dttm)
+//    public boolean updateTask (Integer id, String task_dttm, int task_priority, String task_description,
+//                               String task_reminder,String task_reminder_dttm)
+    public boolean updateTask(Task task)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("task_dttm", task_dttm);
-        contentValues.put("task_priority", task_priority);
-        contentValues.put("task_description", task_description);
-        contentValues.put("task_reminder", task_reminder);
-        contentValues.put("task_reminder_dttm", task_reminder_dttm);
+        contentValues.put(TASK_DTTM, task.getTask_dttm());
+        contentValues.put(TASK_PRIORITY, task.getTask_priority());
+        contentValues.put(TASK_DESCRIPTION, task.getTask_description());
+        contentValues.put(TASK_REMINDER, task.getTask_reminder());
+        contentValues.put(TASK_REMINDER_DTTM, task.getTask_reminder_dttm());
 
-        db.update(TASK_TABLE, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        db.update(TASK_TABLE, contentValues, "id = ? ", new String[] { Integer.toString(task.getId()) } );
         return true;
     }
 
@@ -79,16 +87,23 @@ public class EventsDBHelper extends SQLiteOpenHelper
                 new String[] { Integer.toString(id) });
     }
 
-    public ArrayList<String> getDayTask() {
-        ArrayList<String> array_list = new ArrayList<String>();
+    public ArrayList<Task> get_day_task_list(String task_dttm_str) {
+        ArrayList<Task> array_list = new ArrayList<Task>();
 
-        //hp = new HashMap();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from contacts", null );
+        Cursor res =  db.rawQuery( "select * from "+TASK_TABLE+" where task_dttm = ? ORDER BY "+TASK_PRIORITY+" DESC", new String[]{task_dttm_str} );
         res.moveToFirst();
 
         while(res.isAfterLast() == false){
-//            array_list.add(res.getString(res.getColumnIndex(CONTACTS_COLUMN_NAME)));
+            Task task_temp = new Task(
+                    res.getColumnIndex(TASK_ID),
+                    res.getString(res.getColumnIndex(TASK_DTTM)),
+                    res.getColumnIndex(TASK_PRIORITY),
+                    res.getString(res.getColumnIndex(TASK_DESCRIPTION)),
+                    res.getString(res.getColumnIndex(TASK_REMINDER)),
+                    res.getString(res.getColumnIndex(TASK_REMINDER_DTTM))
+            );
+            array_list.add(task_temp);
             res.moveToNext();
         }
         return array_list;

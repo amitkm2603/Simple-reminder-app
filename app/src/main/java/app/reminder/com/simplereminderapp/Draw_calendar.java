@@ -2,6 +2,7 @@ package app.reminder.com.simplereminderapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -162,6 +163,12 @@ public class Draw_calendar extends BaseAdapter implements View.OnClickListener
 
         String[] day_color = date_list.get(position).split("-");
         gridcell.setText(day_color[0]);
+
+
+        if(Integer.parseInt(day_color[2]) < 10)
+            day_color[2] = "0"+day_color[2];
+
+
         gridcell.setTag(day_color[0] + "-" + day_color[2] + "-" + day_color[3]);
 
         if (day_color[1].equals("GREY"))
@@ -183,8 +190,14 @@ public class Draw_calendar extends BaseAdapter implements View.OnClickListener
     @Override
     public void onClick(View view)
     {
+        String current_date_temp = (String) view.getTag();
         Button currentMonth = (Button) current_activity.findViewById(R.id.currentMonth);
-        currentMonth.setText((String) view.getTag());
+        currentMonth.setText(current_date_temp);
+
+        //transfer the view to add task
+        Intent addTask = new Intent(view.getContext(), Add_task.class);
+        addTask.putExtra("task_date",current_date_temp);
+        current_activity.startActivityForResult(addTask, 0);
 
     }
 }
