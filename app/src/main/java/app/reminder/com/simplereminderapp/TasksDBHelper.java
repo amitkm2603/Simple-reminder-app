@@ -10,7 +10,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 
-public class EventsDBHelper extends SQLiteOpenHelper
+public class TasksDBHelper extends SQLiteOpenHelper
 {
     public static final String DATABASE_NAME = "Cal_tasks.db";
     public static  final String TASK_TABLE = "app_tasks";
@@ -21,7 +21,7 @@ public class EventsDBHelper extends SQLiteOpenHelper
     public static final String TASK_REMINDER_DTTM = "task_reminder_dttm";
     public static final String TASK_ID = "id";
 
-    public EventsDBHelper(Context context) {
+    public TasksDBHelper(Context context) {
         super(context, DATABASE_NAME , null, 1);
     }
 
@@ -52,10 +52,32 @@ public class EventsDBHelper extends SQLiteOpenHelper
         return true;
     }
 
-    public Cursor getData(int id) {
+    public Task getTaskData(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from "+TASK_TABLE+" where id="+id+"", null );
-        return res;
+        Cursor res = null;
+        Task task_temp = null;
+        try{
+
+            res = db.rawQuery( "select * from "+TASK_TABLE+" where id="+id+"", null );
+
+            if(res.getCount() > 0) {
+
+                res.moveToFirst();
+                task_temp = new Task(
+                    Integer.valueOf(res.getString(res.getColumnIndex(TASK_ID))),
+                    res.getString(res.getColumnIndex(TASK_DTTM)),
+                    Integer.valueOf(res.getString(res.getColumnIndex(TASK_PRIORITY))),
+                    res.getString(res.getColumnIndex(TASK_DESCRIPTION)),
+                    res.getString(res.getColumnIndex(TASK_REMINDER)),
+                    res.getString(res.getColumnIndex(TASK_REMINDER_DTTM))
+                );
+            }
+
+            return task_temp;
+        }finally {
+
+            res.close();
+        }
     }
 
     public int numberOfRows(){
@@ -96,9 +118,9 @@ public class EventsDBHelper extends SQLiteOpenHelper
 
         while(res.isAfterLast() == false){
             Task task_temp = new Task(
-                    res.getColumnIndex(TASK_ID),
+                    Integer.valueOf(res.getString(res.getColumnIndex(TASK_ID))),
                     res.getString(res.getColumnIndex(TASK_DTTM)),
-                    res.getColumnIndex(TASK_PRIORITY),
+                    Integer.valueOf(res.getString(res.getColumnIndex(TASK_PRIORITY))),
                     res.getString(res.getColumnIndex(TASK_DESCRIPTION)),
                     res.getString(res.getColumnIndex(TASK_REMINDER)),
                     res.getString(res.getColumnIndex(TASK_REMINDER_DTTM))

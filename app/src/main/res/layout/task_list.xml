@@ -2,33 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#789bf6"
+    android:background="#406ad6"
     >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="aaaaa"
+        android:layout_marginTop="20dp"
         android:gravity="center"
-        android:layout_centerHorizontal="true"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#fff"
-        android:id="@+id/add_task_date"
-        />
+        android:id="@+id/task_list_date"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/add_task_date"
-        android:text="+ Add Task"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#fff"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/add_task_btn"
-        />
+    <View
+        android:layout_below="@+id/task_list_date"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="1dp"
+        android:background="#000000" />
+
+    <Button
+    android:id="@+id/add_task_btn"
+    android:layout_below="@+id/task_list_date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Add Task"
+    android:gravity="center"
+    android:padding="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="10dp"
+    android:drawableLeft="@android:drawable/ic_menu_add"
+    android:background="@drawable/rounded_btn"
+    />
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -36,7 +46,7 @@
         android:layout_below="@+id/add_task_btn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="#fff"
+        android:background="#9ab2f0"
         android:layout_marginTop="20dp"
         android:id="@+id/body_layout_id">
 
@@ -49,58 +59,12 @@
 
         </TableLayout>
 
-        <!--<ListView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:divider="#8DB3E1"-->
-            <!--android:dividerHeight="2dp" >-->
-
-
-
-                <!--<TextView-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:text="Task Importance"-->
-                    <!--android:textColor="#000" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="2"-->
-                    <!--android:text="Description"-->
-                    <!--android:textColor="#000" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="64dp"-->
-                    <!--android:layout_height="37dp"-->
-                    <!--android:text="Edit"-->
-                    <!--android:padding="2dp"-->
-                    <!--android:layout_marginLeft="5dp"-->
-                    <!--android:layout_marginRight="5dp"-->
-
-                    <!--/>-->
-
-                <!--<TextView-->
-
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_marginLeft="2dp"-->
-                    <!--android:layout_marginRight="2dp"-->
-                    <!--android:text="Delete"-->
-                    <!--/>-->
-
-
-
-        <!--</ListView>-->
-
-
-        <ListView
+            <ListView
             android:id="@+id/task_list"
             android:layout_below="@+id/task_tbl_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="#8DB3E1"
+            android:divider="#789bf6"
             android:dividerHeight="2dp" >
 
         </ListView>

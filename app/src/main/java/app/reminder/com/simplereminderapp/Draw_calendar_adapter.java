@@ -194,7 +194,7 @@ public class Draw_calendar_adapter extends BaseAdapter implements View.OnClickLi
         Button currentMonth = (Button) current_activity.findViewById(R.id.currentMonth);
         currentMonth.setText(current_date_temp);
 
-        //transfer the view to add task
+        //transfer the view to task list
         Intent addTask = new Intent(view.getContext(), Task_list.class);
         addTask.putExtra("task_date",current_date_temp);
         current_activity.startActivityForResult(addTask, 0);

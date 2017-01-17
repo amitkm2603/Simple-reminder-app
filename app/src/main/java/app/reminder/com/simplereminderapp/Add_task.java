@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -33,12 +34,12 @@ public class Add_task extends Activity implements View.OnClickListener
     private EditText task_description;
     private EditText task_priority;
     private TextView task_dttm;
-    private EventsDBHelper task_db_helper;
+    private TasksDBHelper task_db_helper;
     private SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
     private Calendar local_calendar = Calendar.getInstance(Locale.getDefault());
-
+    private String date_str;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,13 @@ public class Add_task extends Activity implements View.OnClickListener
 
 //        Date date = new GregorianCalendar(2016, Calendar.NOVEMBER, 11).getTime();
         Bundle bundle = getIntent().getExtras();
-        String date_str = bundle.getString("task_date");
-        task_db_helper = new EventsDBHelper(this);
-        generate_view(date_str);
+        date_str = bundle.getString("task_date");
+        task_id = bundle.getInt("task_id");
+        task_db_helper = new TasksDBHelper(this);
+        generate_view(date_str, task_id);
 
     }
-    public void generate_view(String date_str) {
+    public void generate_view(String date_str, int task_id) {
 
         setContentView(R.layout.add_task);
 
@@ -77,7 +79,7 @@ public class Add_task extends Activity implements View.OnClickListener
         if( task_id > 0)
         {
             task_dttm.setTag(task_id);
-            //get the existing data and set it
+            task = task_db_helper.getTaskData(task_id);
         }
         else
         {
@@ -215,7 +217,7 @@ public class Add_task extends Activity implements View.OnClickListener
         {
             if(save_task())
             {
-                 Toast.makeText(getApplicationContext(),"Task added successfully!",Toast.LENGTH_LONG).show();
+                 Toast.makeText(getApplicationContext(),"Task updated successfully!",Toast.LENGTH_LONG).show();
 //                Toast.makeText(getApplicationContext(),"aa"+task_db_helper.numberOfRows(),Toast.LENGTH_LONG).show();
 
             }
@@ -224,6 +226,21 @@ public class Add_task extends Activity implements View.OnClickListener
                 Toast.makeText(getApplicationContext(),"Something went wrong! Unable to add the task.",Toast.LENGTH_LONG).show();
             }
         }
+        else if( v == close_btn)
+        {
+//            this.finish();
+
+            //transfer the view to task list
+            Intent addTask = new Intent(v.getContext(), Task_list.class);
+            addTask.putExtra("task_date",date_str);
+            this.startActivityForResult(addTask, 0);
+        }
+    }
+
+    public void onBackPressed() {
+        Intent addTask = new Intent(getApplicationContext(), Task_list.class);
+        addTask.putExtra("task_date",date_str);
+        this.startActivityForResult(addTask, 0);
     }
 }
 
