@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -45,7 +46,6 @@ public class Add_task extends Activity implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Date date = new GregorianCalendar(2016, Calendar.NOVEMBER, 11).getTime();
         Bundle bundle = getIntent().getExtras();
         date_str = bundle.getString("task_date");
         task_id = bundle.getInt("task_id");
@@ -69,12 +69,13 @@ public class Add_task extends Activity implements View.OnClickListener
 
         task_dttm.setText(date_str);
 
-//        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        String current_date = dateFormat.format(local_calendar.getTime());
-
-//        dateFormat = new SimpleDateFormat("HH:mm");
         String current_time = timeFormat.format(local_calendar.getTime());
+
+        try {
+            local_calendar.setTime(dateTimeFormat.parse((date_str+" "+current_time)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Task task = null;
         if( task_id > 0)
         {
@@ -84,7 +85,7 @@ public class Add_task extends Activity implements View.OnClickListener
         else
         {
             task_dttm.setTag(0);
-            task = new Task(0, current_date, 10, "", "no", (current_date+" "+current_time));
+            task = new Task(0, date_str, 10, "", "no", (date_str+" "+current_time));
 
         }
 
@@ -105,14 +106,21 @@ public class Add_task extends Activity implements View.OnClickListener
             return;
         task_description.setText(task.getTask_description());
         task_priority.setText(Integer.valueOf(task.getTask_priority()).toString() );
+        int alarm_visible = 0;
         if(task.getTask_reminder() == "yes")
+        {
             add_reminder_chk.setChecked(true);
-        else
+            alarm_visible = TextView.VISIBLE;
+        }
+            else
+        {
             add_reminder_chk.setChecked(false);
+            alarm_visible = TextView.INVISIBLE;
+        }
 
-        add_reminder_date.setVisibility(TextView.VISIBLE);
-        add_reminder_time.setVisibility(TextView.VISIBLE);
-        task_alarm_txt.setVisibility(TextView.VISIBLE);
+        add_reminder_date.setVisibility(alarm_visible);
+        add_reminder_time.setVisibility(alarm_visible);
+        task_alarm_txt.setVisibility(alarm_visible);
 
         String date_str = "";
         String time_str = "";
@@ -228,8 +236,6 @@ public class Add_task extends Activity implements View.OnClickListener
         }
         else if( v == close_btn)
         {
-//            this.finish();
-
             //transfer the view to task list
             Intent addTask = new Intent(v.getContext(), Task_list.class);
             addTask.putExtra("task_date",date_str);
@@ -237,6 +243,9 @@ public class Add_task extends Activity implements View.OnClickListener
         }
     }
 
+    /*
+    When back button is pressed, this transfer the view to task list page
+     */
     public void onBackPressed() {
         Intent addTask = new Intent(getApplicationContext(), Task_list.class);
         addTask.putExtra("task_date",date_str);

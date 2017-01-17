@@ -26,19 +26,34 @@
         android:background="#000000" />
 
     <Button
-    android:id="@+id/add_task_btn"
+    android:id="@+id/back_to_cal_btn"
     android:layout_below="@+id/task_list_date"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Add Task"
-    android:gravity="center"
+    android:text="Back"
+    android:layout_alignParentLeft="true"
     android:padding="5dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginTop="10dp"
-    android:drawableLeft="@android:drawable/ic_menu_add"
+    android:drawableLeft="@android:drawable/ic_menu_revert"
     android:background="@drawable/rounded_btn"
     />
+
+    <Button
+        android:id="@+id/add_task_btn"
+        android:layout_below="@+id/task_list_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Task"
+        android:layout_alignParentRight="true"
+        android:padding="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@android:drawable/ic_menu_add"
+        android:background="@drawable/rounded_btn"
+        />
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

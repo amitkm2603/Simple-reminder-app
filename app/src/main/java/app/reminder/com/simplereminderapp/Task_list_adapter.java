@@ -5,22 +5,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- * Created by User on 2017-01-17.
+/*
+Adapter class for task list rows
  */
-
 public class Task_list_adapter extends BaseAdapter implements View.OnClickListener
 {
 
@@ -28,7 +24,7 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
     private Activity current_activity;
     private final ArrayList<Task> task_list;
     private String current_date;
-    private Task_list_adapter current_instance;
+
 
     public Task_list_adapter(Context _context, Activity _current_activity, ArrayList<Task> _task_list, String _current_date)
     {
@@ -36,7 +32,6 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
         this.current_activity = _current_activity;
         this.task_list = _task_list;
         this.current_date = _current_date;
-        current_instance = this;
     }
     @Override
     public int getCount() {
@@ -114,8 +109,7 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                       TasksDBHelper tasksDBHelper = new TasksDBHelper(context);
                                if(tasksDBHelper.deleteTask(task_id) == 1)
                                {
-//                                   current_activity.recreate();
-                                   current_instance.notifyDataSetChanged();
+                                   current_activity.recreate();
                                    Toast.makeText(current_activity, "Task deleted successfully!", Toast.LENGTH_LONG).show();
                                }
                         else
@@ -133,7 +127,7 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(current_activity);
-        builder.setMessage("Are you sure?")
+        builder.setMessage("Are you sure that you want to delete this task?")
                 .setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
     }

@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -36,9 +35,24 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        Date date = null;
+        if(bundle != null)
+        {
+            String date_str = bundle.getString("task_date");
 
-        Date date = new GregorianCalendar(2016, Calendar.NOVEMBER, 11).getTime();
-        draw_calender(null);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            try
+            {
+                date = dateFormat.parse(date_str);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        draw_calender(date);
 
     }
 
@@ -90,7 +104,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View view_id) {
-        //click handler with v = id of the btn
 
         if (view_id == prevMonth) {
             if (month < 1) {

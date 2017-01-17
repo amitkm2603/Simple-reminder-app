@@ -1,8 +1,10 @@
 package app.reminder.com.simplereminderapp;
 
-
+/*
+Wrapper class for the task objects
+ */
 public class Task {
-    private int id;
+    private int id = 0;
     private String task_dttm;
     private int task_priority;
     private String task_description;
