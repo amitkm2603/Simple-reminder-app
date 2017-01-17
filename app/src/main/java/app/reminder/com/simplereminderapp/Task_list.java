@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class Task_list extends Activity implements View.OnClickListener
         }
         else
         {
+            /*
             TableLayout tableLayout=(TableLayout)this.findViewById(R.id.task_tbl_layout);
             TableRow rowHeader = new TableRow(getApplicationContext());
             rowHeader.setBackgroundColor(Color.parseColor("#c0c0c0"));
@@ -78,6 +80,30 @@ public class Task_list extends Activity implements View.OnClickListener
                 tableLayout.addView(row);
 
             }
+            */
+
+            TableLayout tableLayout=(TableLayout)this.findViewById(R.id.task_tbl_layout);
+            TableRow rowHeader = new TableRow(getApplicationContext());
+            rowHeader.setBackgroundColor(Color.parseColor("#c0c0c0"));
+            rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
+            String[] headerText={"Difficulty","Description","Edit","Delete"};
+            for(String c:headerText) {
+                TextView tv = new TextView(this);
+                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextSize(18);
+                tv.setPadding(5, 5, 5, 5);
+                tv.setText(c);
+                rowHeader.addView(tv);
+            }
+            tableLayout.addView(rowHeader);
+
+            ListView list_view = (ListView)this.findViewById(R.id.task_list);
+            Task_list_adapter task_list_adapter = new Task_list_adapter(getApplicationContext(),this,task_list);
+            task_list_adapter.notifyDataSetChanged();
+            list_view.setAdapter(task_list_adapter);
 
         }
     }

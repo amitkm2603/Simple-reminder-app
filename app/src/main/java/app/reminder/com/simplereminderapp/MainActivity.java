@@ -9,8 +9,6 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,8 +22,8 @@ public class MainActivity extends Activity implements OnClickListener {
     private ImageView nextMonth;
     private GridView calendar_view;
     private GridView calendar_header_view;
-    private Draw_calendar calendar_adapter;
-    private Draw_calendar_header header_adapter;
+    private Draw_calendar_adapter calendar_adapter;
+    private Draw_calendar_header_adapter header_adapter;
     private Calendar local_calendar;
     private int day, month, year;
     private DateFormat dateFormat;
@@ -78,13 +76,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
 
         // initialize the calendar view
-        calendar_adapter = new Draw_calendar(getApplicationContext(), current_activity, R.id.gridcell,day, month, year);
+        calendar_adapter = new Draw_calendar_adapter(getApplicationContext(), current_activity, R.id.gridcell,day, month, year);
         calendar_adapter.notifyDataSetChanged();
         calendar_view.setAdapter(calendar_adapter);
 
-        //  Draw_calendar_header
+        //  Draw_calendar_header_adapter
         //init the cal header
-        header_adapter = new Draw_calendar_header(getApplicationContext(), R.id.gridcell);
+        header_adapter = new Draw_calendar_header_adapter(getApplicationContext(), R.id.gridcell);
         header_adapter.notifyDataSetChanged();
         calendar_header_view.setAdapter(header_adapter);
 
@@ -114,7 +112,7 @@ public class MainActivity extends Activity implements OnClickListener {
         // redraw the calender UI based on calculated day and year
         if(view_id == prevMonth || view_id == nextMonth)
         {
-            calendar_adapter = new Draw_calendar(getApplicationContext(), current_activity, R.id.gridcell, day, month, year);
+            calendar_adapter = new Draw_calendar_adapter(getApplicationContext(), current_activity, R.id.gridcell, day, month, year);
             local_calendar.set(year, month, local_calendar.get(Calendar.DAY_OF_MONTH));
             currentMonth.setText(dateFormat.format(local_calendar.getTime()));
             calendar_adapter.notifyDataSetChanged();

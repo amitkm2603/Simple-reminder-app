@@ -19,9 +19,9 @@ import java.util.List;
  * Description: This class is used to draw the calendar individual cells
  */
 
-public class Draw_calendar extends BaseAdapter implements View.OnClickListener
+public class Draw_calendar_adapter extends BaseAdapter implements View.OnClickListener
 {
-    private static final String tag = "Draw_calendar";
+    private static final String tag = "Draw_calendar_adapter";
     private final Context _context;
     private final List<String> date_list;
     private final String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -36,7 +36,7 @@ public class Draw_calendar extends BaseAdapter implements View.OnClickListener
     private boolean print_current_date = false;
 
     // Days in Current Month
-    public Draw_calendar(Context context, Activity current_act, int textViewResourceId, int day, int month, int year)
+    public Draw_calendar_adapter(Context context, Activity current_act, int textViewResourceId, int day, int month, int year)
     {
         super();
         this._context = context;

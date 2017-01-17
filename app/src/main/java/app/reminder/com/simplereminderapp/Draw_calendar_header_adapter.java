@@ -13,14 +13,14 @@ import java.util.List;
 /**
  * Description: This class is used to draw the calendar header containing the days name
  */
-public class Draw_calendar_header extends BaseAdapter implements View.OnClickListener
+public class Draw_calendar_header_adapter extends BaseAdapter implements View.OnClickListener
 {
     private final Context _context;
     private final List<String> days_list;
     private final String[] weekdays = new String[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
 
     //   constructor
-    public Draw_calendar_header(Context context, int textViewResourceId)
+    public Draw_calendar_header_adapter(Context context, int textViewResourceId)
     {
         super();
         this._context = context;
