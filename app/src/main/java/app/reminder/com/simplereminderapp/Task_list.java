@@ -45,7 +45,7 @@ public class Task_list extends Activity implements View.OnClickListener
         add_task_btn.setOnClickListener(this);
         back_to_cal_btn.setOnClickListener(this);
         current_date = (TextView)this.findViewById(R.id.task_list_date);
-        current_date.setText(date_str);
+        current_date.setText("Showing task list for: "+date_str);
 
         if(task_list.size() == 0)
         {
@@ -55,23 +55,24 @@ public class Task_list extends Activity implements View.OnClickListener
         {
 
             // Adding header to the task list
-            TableLayout tableLayout=(TableLayout)this.findViewById(R.id.task_tbl_layout);
-            TableRow rowHeader = new TableRow(getApplicationContext());
-            rowHeader.setBackgroundColor(Color.parseColor("#c0c0c0"));
-            rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT));
-            String[] headerText={"Difficulty","Description","Edit","Delete"};
-            for(String c:headerText) {
-                TextView tv = new TextView(this);
-                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                        TableRow.LayoutParams.WRAP_CONTENT));
-                tv.setGravity(Gravity.CENTER);
-                tv.setTextSize(18);
-                tv.setPadding(5, 5, 5, 15);
-                tv.setText(c);
-                rowHeader.addView(tv);
-            }
-            tableLayout.addView(rowHeader);
+//
+//            TableLayout tableLayout=(TableLayout)this.findViewById(R.id.task_tbl_layout);
+//            TableRow rowHeader = new TableRow(getApplicationContext());
+//            rowHeader.setBackgroundColor(Color.parseColor("#c0c0c0"));
+//            rowHeader.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
+//                    TableLayout.LayoutParams.WRAP_CONTENT));
+//            String[] headerText={"Difficulty","Description","Edit","Delete"};
+//            for(String c:headerText) {
+//                TextView tv = new TextView(this);
+//                tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+//                        TableRow.LayoutParams.WRAP_CONTENT));
+//                tv.setGravity(Gravity.CENTER);
+//                tv.setTextSize(18);
+//                tv.setPadding(5, 5, 5, 15);
+//                tv.setText(c);
+//                rowHeader.addView(tv);
+//            }
+//            tableLayout.addView(rowHeader);
 
             //populating the actual task list
             ListView list_view = (ListView)this.findViewById(R.id.task_list);
@@ -109,7 +110,7 @@ public class Task_list extends Activity implements View.OnClickListener
 
     /*
     Checks if daily difficulty has been reached by querying the db. if it is reached,
-    then search for two available days for next 60 days when the task can be added and display
+    then search for three available days for next 60 days when the task can be added and display
     it as an alert
      */
     public boolean check_daily_difficulty_reached(String check_date)
@@ -121,7 +122,7 @@ public class Task_list extends Activity implements View.OnClickListener
 
             ArrayList<String> probable_dates = new ArrayList<>();
             int max_count = 1;
-            while(probable_dates.size()<2)
+            while(probable_dates.size()<3)
             {
                 if(max_count == 60)
                     break;

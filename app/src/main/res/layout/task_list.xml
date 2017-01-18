@@ -38,7 +38,8 @@
     android:layout_marginTop="10dp"
     android:drawableLeft="@android:drawable/ic_menu_revert"
     android:background="@drawable/rounded_btn"
-    />
+        android:layout_above="@+id/body_layout_id"
+        android:textStyle="normal|bold" />
 
     <Button
         android:id="@+id/add_task_btn"
@@ -53,7 +54,8 @@
         android:layout_marginTop="10dp"
         android:drawableLeft="@android:drawable/ic_menu_add"
         android:background="@drawable/rounded_btn"
-        />
+        android:elevation="0dp"
+        android:textStyle="normal|bold" />
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

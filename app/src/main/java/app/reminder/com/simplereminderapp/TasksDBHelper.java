@@ -17,24 +17,32 @@ public class TasksDBHelper extends SQLiteOpenHelper
     private static final String TASK_DTTM = "task_dttm";
     private static final String TASK_PRIORITY = "task_priority";
     private static final String TASK_DESCRIPTION = "task_description";
+    private static final String TASK_COMPLETE = "task_complete";
     private static final String TASK_REMINDER = "task_reminder";
     private static final String TASK_REMINDER_DTTM = "task_reminder_dttm";
     private static final String TASK_ID = "id";
+    private final static int    DB_VERSION = 2;
 
     public TasksDBHelper(Context context) {
-        super(context, DATABASE_NAME , null, 1);
+        super(context, DATABASE_NAME , null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE app_tasks (id integer primary key, task_dttm TEXT, task_priority INT, task_description TEXT, " +
+        db.execSQL("CREATE TABLE app_tasks (id integer primary key, task_dttm TEXT, task_priority INT, task_description TEXT, task_complete TEXT, " +
                 "task_reminder TEXT, task_reminder_dttm TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS app_tasks");
-        onCreate(db);
+
+        if (oldVersion < 2) {
+            final String ALTER_TBL =
+                    "ALTER TABLE " + TASK_TABLE +
+                            " ADD COLUMN task_complete text;";
+            db.execSQL(ALTER_TBL);
+        }
+
     }
 
 
@@ -46,6 +54,7 @@ public class TasksDBHelper extends SQLiteOpenHelper
         contentValues.put(TASK_DTTM, task.getTask_dttm());
         contentValues.put(TASK_PRIORITY, task.getTask_priority());
         contentValues.put(TASK_DESCRIPTION, task.getTask_description());
+        contentValues.put(TASK_COMPLETE, task.getTask_complete());
         contentValues.put(TASK_REMINDER, task.getTask_reminder());
         contentValues.put(TASK_REMINDER_DTTM, task.getTask_reminder_dttm());
         db.insert(TASK_TABLE, null, contentValues);
@@ -71,6 +80,7 @@ public class TasksDBHelper extends SQLiteOpenHelper
                     res.getString(res.getColumnIndex(TASK_DTTM)),
                     Integer.valueOf(res.getString(res.getColumnIndex(TASK_PRIORITY))),
                     res.getString(res.getColumnIndex(TASK_DESCRIPTION)),
+                    res.getString(res.getColumnIndex(TASK_COMPLETE)),
                     res.getString(res.getColumnIndex(TASK_REMINDER)),
                     res.getString(res.getColumnIndex(TASK_REMINDER_DTTM))
                 );
@@ -97,6 +107,7 @@ public class TasksDBHelper extends SQLiteOpenHelper
         contentValues.put(TASK_DTTM, task.getTask_dttm());
         contentValues.put(TASK_PRIORITY, task.getTask_priority());
         contentValues.put(TASK_DESCRIPTION, task.getTask_description());
+        contentValues.put(TASK_COMPLETE, task.getTask_complete());
         contentValues.put(TASK_REMINDER, task.getTask_reminder());
         contentValues.put(TASK_REMINDER_DTTM, task.getTask_reminder_dttm());
 
@@ -118,7 +129,8 @@ public class TasksDBHelper extends SQLiteOpenHelper
         Cursor res = null;
         int task_priority_total = 0;
         try{
-            res = db.rawQuery( "select sum(task_priority) as task_priority_total from "+TASK_TABLE+" where task_dttm="+task_dttm_str+"", null );
+            res = db.rawQuery( "select sum(task_priority) as task_priority_total from "+TASK_TABLE+" where task_dttm="+task_dttm_str+"" +
+                    " and task_complete = 'no'", null );
 
             if(res.getCount() > 0) {
 
@@ -138,7 +150,11 @@ public class TasksDBHelper extends SQLiteOpenHelper
         ArrayList<Task> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from "+TASK_TABLE+" where task_dttm = ? ORDER BY "+TASK_PRIORITY+" DESC", new String[]{task_dttm_str} );
+        Cursor res =  db.rawQuery( "select * from "+TASK_TABLE+" where task_dttm = ? ORDER BY case "+TASK_COMPLETE+"\n" +
+                " when \"yes\" then 3\n" +
+                " when \"no\" then 2\n" +
+                " when NULL then 1\n" +
+                " end asc, "+TASK_PRIORITY+" DESC", new String[]{task_dttm_str} );
         res.moveToFirst();
 
         while(res.isAfterLast() == false){
@@ -147,6 +163,7 @@ public class TasksDBHelper extends SQLiteOpenHelper
                     res.getString(res.getColumnIndex(TASK_DTTM)),
                     Integer.valueOf(res.getString(res.getColumnIndex(TASK_PRIORITY))),
                     res.getString(res.getColumnIndex(TASK_DESCRIPTION)),
+                    res.getString(res.getColumnIndex(TASK_COMPLETE)),
                     res.getString(res.getColumnIndex(TASK_REMINDER)),
                     res.getString(res.getColumnIndex(TASK_REMINDER_DTTM))
             );
@@ -154,5 +171,37 @@ public class TasksDBHelper extends SQLiteOpenHelper
             res.moveToNext();
         }
         return array_list;
+    }
+
+    public int mark_task_done(int task_id)
+    {
+        int rows_updated = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TASK_COMPLETE, "yes");
+            rows_updated = db.update(TASK_TABLE, contentValues, "id = ? ", new String[] { Integer.toString(task_id) } );
+        }
+        finally {
+            db.close();
+        }
+        return rows_updated;
+    }
+
+    public  int unmark_task_done(int task_id)
+    {
+        int rows_updated = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try{
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TASK_COMPLETE, "no");
+            rows_updated = db.update(TASK_TABLE, contentValues, "id = ? ", new String[] { Integer.toString(task_id) } );
+        }
+        finally {
+            db.close();
+        }
+        return rows_updated;
     }
 }

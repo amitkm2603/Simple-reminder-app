@@ -7,6 +7,20 @@
     android:orientation="horizontal"
     android:padding="8dp" >
 
+    <CheckBox
+        android:id="@+id/task_list_cell_mark_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_weight=".05"
+        android:gravity="center"
+        android:layout_marginLeft="-8dp"
+        android:buttonTint="#000"
+        android:textColor="#000" />
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#000000" />
     <TextView
         android:id="@+id/task_list_cell_difficulty"
         android:layout_width="0dp"
@@ -24,7 +38,7 @@
         android:id="@+id/task_list_cell_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="6"
         android:gravity="center"
         android:padding="5dp"
         android:textSize="18dp"
@@ -33,27 +47,7 @@
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:background="#000000" />
-    <!--<Button-->
-        <!--android:id="@+id/task_list_cell_edit"-->
-        <!--android:layout_width="64dp"-->
-        <!--android:layout_height="37dp"-->
-        <!--android:text="Edit"-->
-        <!--android:gravity="center"-->
-        <!--android:padding="5dp"-->
-        <!--android:textSize="18dp"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:layout_marginRight="5dp"-->
-        <!--android:background="@drawable/rounded_btn"-->
-        <!--/>-->
-    <!--<ImageButton-->
-        <!--android:id="@+id/task_list_cell_edit"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_marginLeft="2dp"-->
-        <!--android:layout_marginRight="2dp"-->
-        <!--android:gravity="center"-->
-        <!--android:padding="5dp"-->
-        <!--android:background="@android:drawable/ic_menu_edit" />-->
+
     <TextView
         android:id="@+id/task_list_cell_edit"
         android:layout_width="0dp"
@@ -64,19 +58,10 @@
         android:textSize="18dp"
         android:drawableTop="@android:drawable/ic_menu_edit"
         android:textColor="#000" />
-    <!--<View-->
-        <!--android:layout_width="1dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="#000000" />-->
-    <!--<ImageButton-->
-        <!--android:id="@+id/task_list_cell_delete"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_marginLeft="2dp"-->
-        <!--android:layout_marginRight="2dp"-->
-        <!--android:gravity="center"-->
-        <!--android:padding="5dp"-->
-        <!--android:background="@android:drawable/ic_menu_delete" />-->
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#000000" />
     <TextView
         android:id="@+id/task_list_cell_delete"
         android:layout_width="0dp"
@@ -85,7 +70,10 @@
         android:gravity="center"
         android:padding="5dp"
         android:textSize="18dp"
+        android:layout_marginRight="-8dp"
         android:drawableTop="@android:drawable/ic_menu_delete"
         android:textColor="#000" />
+
+
 
 </LinearLayout>

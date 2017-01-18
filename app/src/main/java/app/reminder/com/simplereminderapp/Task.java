@@ -8,16 +8,20 @@ public class Task {
     private String task_dttm;
     private int task_priority;
     private String task_description;
+    private String task_complete;
     private String task_reminder;
     private String task_reminder_dttm;
 
-    public Task(int id, String task_dttm,int task_priority, String task_description, String task_reminder, String task_reminder_dttm)
+
+
+    public Task(int id, String task_dttm, int task_priority, String task_description, String task_complete, String task_reminder, String task_reminder_dttm)
     {
         super();
         this.id = id;
         this.task_dttm = task_dttm;
         this.task_priority = task_priority;
         this.task_description = task_description;
+        this.task_complete = task_complete;
         this.task_reminder = task_reminder;
         this.task_reminder_dttm = task_reminder_dttm;
     }
@@ -53,7 +57,13 @@ public class Task {
     public void setTask_description(String task_description) {
         this.task_description = task_description;
     }
+    public String getTask_complete() {
+        return task_complete;
+    }
 
+    public void setTask_complete(String task_complete) {
+        this.task_complete = task_complete;
+    }
     public String getTask_reminder() {
         return task_reminder;
     }

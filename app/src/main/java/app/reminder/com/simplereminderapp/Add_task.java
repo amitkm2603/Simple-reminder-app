@@ -30,6 +30,7 @@ public class Add_task extends Activity implements View.OnClickListener
     private TextView close_btn;
     private TextView task_alarm_txt;
     private CheckBox add_reminder_chk;
+    private CheckBox add_task_complete;
     private TextView add_reminder_date;
     private TextView add_reminder_time;
     private EditText task_description;
@@ -60,6 +61,7 @@ public class Add_task extends Activity implements View.OnClickListener
         save_btn            = (TextView)this.findViewById(R.id.add_task_save);
         close_btn           = (TextView)this.findViewById(R.id.add_task_close);
         add_reminder_chk    = (CheckBox)this.findViewById(R.id.add_task_reminder_checkbox);
+        add_task_complete   = (CheckBox)this.findViewById(R.id.add_task_complete);
         add_reminder_date   = (TextView)this.findViewById(R.id.set_reminder_date_txt);
         add_reminder_time   = (TextView)this.findViewById(R.id.set_reminder_time_txt);
         task_description    = (EditText)this.findViewById(R.id.add_task_text);
@@ -67,7 +69,7 @@ public class Add_task extends Activity implements View.OnClickListener
         task_dttm           = (TextView)this.findViewById(R.id.add_task_date);
         task_alarm_txt      = (TextView)this.findViewById(R.id.task_alarm_txt);
 
-        task_dttm.setText(date_str);
+
 
         String current_time = timeFormat.format(local_calendar.getTime());
 
@@ -76,16 +78,18 @@ public class Add_task extends Activity implements View.OnClickListener
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Task task = null;
+        Task task;
         if( task_id > 0)
         {
+            task_dttm.setText("Update task for: "+date_str);
             task_dttm.setTag(task_id);
             task = task_db_helper.getTaskData(task_id);
         }
         else
         {
+            task_dttm.setText("Add task for: "+date_str);
             task_dttm.setTag(0);
-            task = new Task(0, date_str, 10, "", "no", (date_str+" "+current_time));
+            task = new Task(0, date_str, 10, "", "no","no", (date_str+" "+current_time));
 
         }
 
@@ -105,9 +109,11 @@ public class Add_task extends Activity implements View.OnClickListener
         if(task == null)
             return;
         task_description.setText(task.getTask_description());
-        task_priority.setText(Integer.valueOf(task.getTask_priority()).toString() );
+        task_priority.setText(String.valueOf(task.getTask_priority()));
         int alarm_visible = 0;
-        if(task.getTask_reminder() == "yes")
+        String x = task.getTask_reminder();
+        String y = task.getTask_complete();
+        if(task.getTask_reminder()!= null && task.getTask_reminder().equalsIgnoreCase("yes"))
         {
             add_reminder_chk.setChecked(true);
             alarm_visible = TextView.VISIBLE;
@@ -117,6 +123,11 @@ public class Add_task extends Activity implements View.OnClickListener
             add_reminder_chk.setChecked(false);
             alarm_visible = TextView.INVISIBLE;
         }
+
+        if(task.getTask_complete()!=null && task.getTask_complete().equalsIgnoreCase("yes"))
+            add_task_complete.setChecked(true);
+        else
+            add_task_complete.setChecked(false);
 
         add_reminder_date.setVisibility(alarm_visible);
         add_reminder_time.setVisibility(alarm_visible);
@@ -140,7 +151,7 @@ public class Add_task extends Activity implements View.OnClickListener
 
 
     }
-    public boolean save_task()
+    public void save_task()
     {
 
         int id = (int)task_dttm.getTag();
@@ -148,24 +159,42 @@ public class Add_task extends Activity implements View.OnClickListener
         int _task_priority = Integer.valueOf(task_priority.getText().toString()) ;
         String _task_description = task_description.getText().toString();
         String _task_reminder = add_reminder_chk.isChecked()?"yes":"no";
+        String _task_complete = add_task_complete.isChecked()?"yes":"no";
         String _task_reminder_dttm = (String)add_reminder_date.getText() +" "+(String)add_reminder_time.getText();
-
+        String return_message = "";
+        Boolean validate_flag = true;
 
         //validate
         if(_task_description.length() == 0)
         {
-            Toast.makeText(getApplicationContext(),"Please provide a description!",Toast.LENGTH_LONG).show();
-            return false;
+            return_message ="Please provide a description!";
+            validate_flag = false;
         }
-        //create a task obj
-        Task task = new Task(id, _task_dttm,_task_priority, _task_description, _task_reminder, _task_reminder_dttm);
 
-        //if the id is 0, insert a new row in the db else update it
-        if(id == 0)
-            return  task_db_helper.insertTask(task);
-        else
-            return  task_db_helper.updateTask(task);
+        if(validate_flag)
+        {
+            //create a task obj
+            Task task = new Task(id, _task_dttm,_task_priority, _task_description, _task_complete, _task_reminder, _task_reminder_dttm);
 
+            //if the id is 0, insert a new row in the db else update it
+            if(id == 0)
+            {
+                if(task_db_helper.insertTask(task))
+                    return_message = "Task added successfully!";
+                else
+                    return_message = "Something went wrong! Unable to add the task.";
+            }
+            else
+            {
+                if(task_db_helper.updateTask(task))
+                    return_message = "Task updated successfully!";
+                else
+                    return_message = "Something went wrong! Unable to add the task.";
+            }
+        }
+
+
+        Toast.makeText(getApplicationContext(),return_message,Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -223,16 +252,7 @@ public class Add_task extends Activity implements View.OnClickListener
         }
         else if( v == save_btn)
         {
-            if(save_task())
-            {
-                 Toast.makeText(getApplicationContext(),"Task updated successfully!",Toast.LENGTH_LONG).show();
-//                Toast.makeText(getApplicationContext(),"aa"+task_db_helper.numberOfRows(),Toast.LENGTH_LONG).show();
-
-            }
-            else
-            {
-                Toast.makeText(getApplicationContext(),"Something went wrong! Unable to add the task.",Toast.LENGTH_LONG).show();
-            }
+            save_task();
         }
         else if( v == close_btn)
         {

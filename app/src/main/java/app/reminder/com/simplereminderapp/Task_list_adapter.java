@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
         TextView task_description = (TextView)list_cell.findViewById(R.id.task_list_cell_description);
         TextView task_edit_btn = (TextView)list_cell.findViewById(R.id.task_list_cell_edit);
         TextView task_delete_btn = (TextView)list_cell.findViewById(R.id.task_list_cell_delete);
+        CheckBox task_complete_cb = (CheckBox)list_cell.findViewById(R.id.task_list_cell_mark_complete);
 
 
         Task current_task = task_list.get(position);
@@ -70,10 +72,17 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
         task_description.setText(current_task.getTask_description());
         task_edit_btn.setTag(String.valueOf(current_task.getId()));
         task_delete_btn.setTag(String.valueOf(current_task.getId()));
+        task_complete_cb.setTag(String.valueOf(current_task.getId()));
+
+        if(current_task.getTask_complete()!= null && current_task.getTask_complete().equalsIgnoreCase("yes"))
+            task_complete_cb.setChecked(true);
+        else
+            task_complete_cb.setChecked(false);
 
         //set onlick listeners
         task_edit_btn.setOnClickListener(this);
         task_delete_btn.setOnClickListener(this);
+        task_complete_cb.setOnClickListener(this);
         return list_cell;
     }
 
@@ -97,7 +106,70 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                 delete_confirmation(task_id);
 
                 break;
+            case R.id.task_list_cell_mark_complete:
+                task_id = Integer.valueOf(String.valueOf(v.getTag()));
+                toogle_mark_complete_confirmation(task_id,((CheckBox) v).isChecked());
+                break;
         }
+    }
+
+    public void toogle_mark_complete_confirmation(final int task_id, final boolean marked) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        // Yes button clicked
+                        TasksDBHelper tasksDBHelper = new TasksDBHelper(context);
+                        String toast_msg_str = "";
+                        if(marked)
+                        {
+                            if(tasksDBHelper.mark_task_done(task_id) == 1)
+                            {
+                                current_activity.recreate();
+                                toast_msg_str ="Task marked as complete!";
+                            }
+                            else
+                            {
+                                toast_msg_str ="Something went wrong. Unable to mark the task as complete!";
+                            }
+                        }
+                        else
+                        {
+                            if(tasksDBHelper.unmark_task_done(task_id) == 1)
+                            {
+                                current_activity.recreate();
+                                toast_msg_str ="Task marked as incomplete!";
+                            }
+                            else
+                            {
+                                toast_msg_str ="Something went wrong. Unable to mark the task as incomplete!";
+                            }
+                        }
+
+                        Toast.makeText(current_activity, toast_msg_str, Toast.LENGTH_LONG).show();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // No button clicked
+                        // do nothing
+                        break;
+                }
+            }
+        };
+        String dialog_msg = "";
+        if(marked)
+        {
+            dialog_msg = "Are you sure you want to mark this task as complete?";
+        }
+        else
+        {
+            dialog_msg = "Are you sure you want to un-mark this task as complete?";
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(current_activity);
+        builder.setMessage(dialog_msg)
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     public void delete_confirmation(final int task_id) {
