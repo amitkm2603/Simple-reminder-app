@@ -50,7 +50,7 @@ public class Draw_calendar_adapter extends BaseAdapter implements View.OnClickLi
         currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 //        currentDayOfMonth = day;
 
-        if(calendar.get(Calendar.MONTH) == month)
+        if(calendar.get(Calendar.MONTH) == month && calendar.get(Calendar.YEAR) == year)
             print_current_date = true;
 
 
@@ -191,10 +191,10 @@ public class Draw_calendar_adapter extends BaseAdapter implements View.OnClickLi
     public void onClick(View view)
     {
         String current_date_temp = (String) view.getTag();
-        Button currentMonth = (Button) current_activity.findViewById(R.id.currentMonth);
-        currentMonth.setText(current_date_temp);
+        Button selected_date = (Button) current_activity.findViewById(R.id.selected_date);
+        selected_date.setText(current_date_temp);
 
-        //transfer the view to task list
+         //transfer the view to task list
         Intent addTask = new Intent(view.getContext(), Task_list.class);
         addTask.putExtra("task_date",current_date_temp);
         current_activity.startActivityForResult(addTask, 0);

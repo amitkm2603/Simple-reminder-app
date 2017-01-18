@@ -2,21 +2,26 @@ package app.reminder.com.simplereminderapp;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
     private static final String tag = "MainActivity";
     private Button currentMonth;
+    private Button selected_date;
     private ImageView prevMonth;
     private ImageView nextMonth;
     private GridView calendar_view;
@@ -25,8 +30,9 @@ public class MainActivity extends Activity implements OnClickListener {
     private Draw_calendar_header_adapter header_adapter;
     private Calendar local_calendar;
     private int day, month, year;
-    private DateFormat dateFormat;
     private Activity current_activity;
+    private TextView cal_view_show_list;
+    private SimpleDateFormat dateFormat;
 
 
     /**
@@ -41,7 +47,7 @@ public class MainActivity extends Activity implements OnClickListener {
         {
             String date_str = bundle.getString("task_date");
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             try
             {
                 date = dateFormat.parse(date_str);
@@ -82,8 +88,10 @@ public class MainActivity extends Activity implements OnClickListener {
         //set the current date in the view
         dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         currentMonth = (Button) this.findViewById(R.id.currentMonth);
-        currentMonth.setText(dateFormat.format(local_calendar.getTime()));
+        currentMonth.setText(new SimpleDateFormat("MMMM").format(local_calendar.getTime()));
 
+        selected_date = (Button)this.findViewById(R.id.selected_date);
+        selected_date.setText(dateFormat.format(local_calendar.getTime()));
         //set the click listeners
         prevMonth.setOnClickListener(this);
         nextMonth.setOnClickListener(this);
@@ -100,12 +108,18 @@ public class MainActivity extends Activity implements OnClickListener {
         header_adapter.notifyDataSetChanged();
         calendar_header_view.setAdapter(header_adapter);
 
+
+        //set the task list button
+        cal_view_show_list = (TextView)this.findViewById(R.id.cal_view_show_list);
+        cal_view_show_list.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View view_id) {
 
-        if (view_id == prevMonth) {
+        String date_str = dateFormat.format(local_calendar.getTime());
+        if (view_id.getId() == prevMonth.getId()) {
             if (month < 1) {
                 month = 11;
                 year--;
@@ -113,7 +127,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 month--;
             }
         }
-        if (view_id == nextMonth) {
+        if (view_id.getId() == nextMonth.getId()) {
             if (month >= 11) {
                 month = 0;
                 year++;
@@ -123,16 +137,23 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
         // redraw the calender UI based on calculated day and year
-        if(view_id == prevMonth || view_id == nextMonth)
+        if(view_id.getId() == prevMonth.getId() || view_id.getId() == nextMonth.getId())
         {
             calendar_adapter = new Draw_calendar_adapter(getApplicationContext(), current_activity, R.id.gridcell, day, month, year);
             local_calendar.set(year, month, local_calendar.get(Calendar.DAY_OF_MONTH));
-            currentMonth.setText(dateFormat.format(local_calendar.getTime()));
+            selected_date.setText(date_str);
+            currentMonth.setText(new SimpleDateFormat("MMMM").format(local_calendar.getTime()));
             calendar_adapter.notifyDataSetChanged();
             calendar_view.setAdapter(calendar_adapter);
         }
 
-        System.out.println(view_id.getId());
+        if(view_id.getId() == cal_view_show_list.getId())
+        {
+            Intent addTask = new Intent(view_id.getContext(), Task_list.class);
+            addTask.putExtra("task_date",dateFormat.format(Calendar.getInstance(Locale.getDefault()).getTime()));
+            current_activity.startActivityForResult(addTask, 0);
+
+        }
     }
 
 }

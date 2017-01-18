@@ -6,15 +6,6 @@
     android:layout_height="fill_parent"
     android:background="@drawable/bg_color">
 
-    <!--<ImageView-->
-    <!--android:id="@+id/calendarToJournalButton"-->
-    <!--android:src="@drawable/add_journal_icon"-->
-    <!--android:gravity="left"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:paddingBottom="10dip">-->
-    <!--</ImageView>-->
-
 
     <Button
         android:id="@+id/selected_date"
@@ -59,13 +50,7 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <!--<ImageView-->
-            <!--android:id="@+id/calendarheader"-->
-            <!--android:src="@drawable/blue_bg_with_text"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-        <!--</ImageView>-->
+
         <GridView
             android:id="@+id/calendarheader"
             android:numColumns="7"
@@ -84,5 +69,30 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12px">
     </GridView>
+
+    <RelativeLayout
+        android:layout_below="@+id/calendar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0px"
+        android:background="#b5c8fa"
+        >
+
+        <TextView
+        android:id="@+id/cal_view_show_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Today's tasks "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:drawableRight="@android:drawable/ic_media_play"
+        android:background="@drawable/border"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>
