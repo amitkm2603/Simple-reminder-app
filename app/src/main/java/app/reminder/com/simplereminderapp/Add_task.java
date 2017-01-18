@@ -25,7 +25,6 @@ public class Add_task extends Activity implements View.OnClickListener
 
     private Activity current_activity;
     private Context context;
-    private int task_id;
     private TextView save_btn;
     private TextView close_btn;
     private TextView task_alarm_txt;
@@ -49,9 +48,8 @@ public class Add_task extends Activity implements View.OnClickListener
 
         Bundle bundle = getIntent().getExtras();
         date_str = bundle.getString("task_date");
-        task_id = bundle.getInt("task_id");
         task_db_helper = new TasksDBHelper(this);
-        generate_view(date_str, task_id);
+        generate_view(date_str, bundle.getInt("task_id"));
 
     }
     public void generate_view(String date_str, int task_id) {
@@ -110,9 +108,8 @@ public class Add_task extends Activity implements View.OnClickListener
             return;
         task_description.setText(task.getTask_description());
         task_priority.setText(String.valueOf(task.getTask_priority()));
-        int alarm_visible = 0;
-        String x = task.getTask_reminder();
-        String y = task.getTask_complete();
+        int alarm_visible;
+
         if(task.getTask_reminder()!= null && task.getTask_reminder().equalsIgnoreCase("yes"))
         {
             add_reminder_chk.setChecked(true);
@@ -133,8 +130,8 @@ public class Add_task extends Activity implements View.OnClickListener
         add_reminder_time.setVisibility(alarm_visible);
         task_alarm_txt.setVisibility(alarm_visible);
 
-        String date_str = "";
-        String time_str = "";
+        String date_str, time_str;
+
         try
         {
             date_str = dateFormat.format(dateTimeFormat.parse(task.getTask_reminder_dttm()));
@@ -223,7 +220,7 @@ public class Add_task extends Activity implements View.OnClickListener
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                    String month = new String();
+                    String month ;
                     if(monthOfYear < 9)
                         month = "0" + (monthOfYear+1);
                     else
