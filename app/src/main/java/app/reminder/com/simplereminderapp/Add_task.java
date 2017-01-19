@@ -152,7 +152,7 @@ public class Add_task extends Activity implements View.OnClickListener
     {
 
         int id = (int)task_dttm.getTag();
-        String _task_dttm = (String)task_dttm.getText();
+        String _task_dttm = date_str;
         int _task_priority = Integer.valueOf(task_priority.getText().toString()) ;
         String _task_description = task_description.getText().toString();
         String _task_reminder = add_reminder_chk.isChecked()?"yes":"no";

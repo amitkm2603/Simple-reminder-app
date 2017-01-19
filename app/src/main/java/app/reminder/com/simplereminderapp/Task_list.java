@@ -115,7 +115,7 @@ public class Task_list extends Activity implements View.OnClickListener
      */
     public boolean check_daily_difficulty_reached(String check_date)
     {
-        if(task_db_helper.get_total_daily_difficulty(check_date) < max_daily_difficulty)
+          if(task_db_helper.get_total_daily_difficulty(check_date) < max_daily_difficulty)
             return true;
         else
         {
@@ -132,7 +132,8 @@ public class Task_list extends Activity implements View.OnClickListener
                     c.setTime(current_date_temp);
                     c.add(Calendar.DATE,max_count);
                     String temp_string = dateFormat.format(c.getTime());
-                    if(task_db_helper.get_total_daily_difficulty(check_date) < max_daily_difficulty)
+
+                    if(task_db_helper.get_total_daily_difficulty(temp_string) < max_daily_difficulty)
                     {
                         probable_dates.add(temp_string);
                     }

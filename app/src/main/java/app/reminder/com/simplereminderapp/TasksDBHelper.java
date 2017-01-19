@@ -129,7 +129,7 @@ public class TasksDBHelper extends SQLiteOpenHelper
         Cursor res = null;
         int task_priority_total = 0;
         try{
-            res = db.rawQuery( "select sum(task_priority) as task_priority_total from "+TASK_TABLE+" where task_dttm="+task_dttm_str+"" +
+            res = db.rawQuery( "select sum(task_priority) as task_priority_total from "+TASK_TABLE+" where task_dttm='"+task_dttm_str+"' " +
                     " and task_complete = 'no'", null );
 
             if(res.getCount() > 0) {
