@@ -1,6 +1,7 @@
 package app.reminder.com.simplereminderapp;
 /*
 SQLite helper class for the tasks table
+Reference: https://www.tutorialspoint.com/android/android_sqlite_database.htm
  */
 import java.util.ArrayList;
 import android.content.ContentValues;

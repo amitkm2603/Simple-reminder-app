@@ -216,6 +216,7 @@ public class Add_task extends Activity implements View.OnClickListener
 
         else if(v == add_reminder_date)
         {
+            //creating date picker dialog by implementing the datepicker.onDateSetListener using anonymous class implementation
             DatePickerDialog  mdiDialog =new DatePickerDialog(this,new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
