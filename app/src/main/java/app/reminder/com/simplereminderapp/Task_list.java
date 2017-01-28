@@ -3,14 +3,10 @@ package app.reminder.com.simplereminderapp;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -25,7 +21,6 @@ public class Task_list extends Activity implements View.OnClickListener
     private TasksDBHelper task_db_helper;
     private TextView current_date;
     private String date_str;
-    private final int max_daily_difficulty = 400;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +110,7 @@ public class Task_list extends Activity implements View.OnClickListener
      */
     public boolean check_daily_difficulty_reached(String check_date)
     {
-          if(task_db_helper.get_total_daily_difficulty(check_date) < max_daily_difficulty)
+          if(task_db_helper.get_total_daily_difficulty(check_date,0) < Task.MAX_DAILY_DIFFICULTY)
             return true;
         else
         {
@@ -133,7 +128,7 @@ public class Task_list extends Activity implements View.OnClickListener
                     c.add(Calendar.DATE,max_count);
                     String temp_string = dateFormat.format(c.getTime());
 
-                    if(task_db_helper.get_total_daily_difficulty(temp_string) < max_daily_difficulty)
+                    if(task_db_helper.get_total_daily_difficulty(temp_string, 0) < Task.MAX_DAILY_DIFFICULTY)
                     {
                         probable_dates.add(temp_string);
                     }

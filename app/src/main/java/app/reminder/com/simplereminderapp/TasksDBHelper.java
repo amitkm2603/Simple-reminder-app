@@ -123,15 +123,18 @@ public class TasksDBHelper extends SQLiteOpenHelper
                 new String[] { Integer.toString(id) });
     }
 
-
-    public Integer get_total_daily_difficulty(String task_dttm_str)
+    /*
+     * Get the total incomplete difficulty for a given day
+     *  exclude_id is used to exclude a particular task - used while updating the tasks
+     */
+    public int get_total_daily_difficulty(String task_dttm_str, int exclude_id)
     {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = null;
         int task_priority_total = 0;
         try{
             res = db.rawQuery( "select sum(task_priority) as task_priority_total from "+TASK_TABLE+" where task_dttm='"+task_dttm_str+"' " +
-                    " and task_complete = 'no'", null );
+                    " and task_complete = 'no' and  id <> '"+exclude_id+"' ", null );
 
             if(res.getCount() > 0) {
 
@@ -140,7 +143,12 @@ public class TasksDBHelper extends SQLiteOpenHelper
             }
 
             return task_priority_total;
-        }finally {
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return task_priority_total;
+        }
+        finally {
 
             res.close();
         }

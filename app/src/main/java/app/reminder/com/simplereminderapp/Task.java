@@ -4,6 +4,9 @@ package app.reminder.com.simplereminderapp;
 Wrapper class for the task objects
  */
 public class Task {
+
+    public static final int MAX_DAILY_DIFFICULTY = 400;
+
     private int id = 0;
     private String task_dttm;
     private int task_priority;

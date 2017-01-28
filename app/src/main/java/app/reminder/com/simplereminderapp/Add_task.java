@@ -148,57 +148,13 @@ public class Add_task extends Activity implements View.OnClickListener
 
 
     }
-    public void save_task()
-    {
 
-        int id = (int)task_dttm.getTag();
-        String _task_dttm = date_str;
-        int _task_priority = Integer.valueOf(task_priority.getText().toString()) ;
-        String _task_description = task_description.getText().toString();
-        String _task_reminder = add_reminder_chk.isChecked()?"yes":"no";
-        String _task_complete = add_task_complete.isChecked()?"yes":"no";
-        String _task_reminder_dttm = (String)add_reminder_date.getText() +" "+(String)add_reminder_time.getText();
-        String return_message = "";
-        Boolean validate_flag = true;
-
-        //validate
-        if(_task_description.length() == 0)
-        {
-            return_message ="Please provide a description!";
-            validate_flag = false;
-        }
-
-        if(validate_flag)
-        {
-            //create a task obj
-            Task task = new Task(id, _task_dttm,_task_priority, _task_description, _task_complete, _task_reminder, _task_reminder_dttm);
-
-            //if the id is 0, insert a new row in the db else update it
-            if(id == 0)
-            {
-                if(task_db_helper.insertTask(task))
-                    return_message = "Task added successfully!";
-                else
-                    return_message = "Something went wrong! Unable to add the task.";
-            }
-            else
-            {
-                if(task_db_helper.updateTask(task))
-                    return_message = "Task updated successfully!";
-                else
-                    return_message = "Something went wrong! Unable to add the task.";
-            }
-        }
-
-
-        Toast.makeText(getApplicationContext(),return_message,Toast.LENGTH_LONG).show();
-    }
 
     @Override
     public void onClick(View v) {
 
 
-        if(v == add_reminder_chk)
+        if(v.getId() == add_reminder_chk.getId())
         {
             if(add_reminder_chk.isChecked())
             {
@@ -214,7 +170,7 @@ public class Add_task extends Activity implements View.OnClickListener
             }
         }
 
-        else if(v == add_reminder_date)
+        else if(v.getId() == add_reminder_date.getId())
         {
             //creating date picker dialog by implementing the datepicker.onDateSetListener using anonymous class implementation
             DatePickerDialog  mdiDialog =new DatePickerDialog(this,new DatePickerDialog.OnDateSetListener() {
@@ -233,7 +189,7 @@ public class Add_task extends Activity implements View.OnClickListener
             mdiDialog.show();
         }
 
-        else if( v == add_reminder_time)
+        else if( v.getId() == add_reminder_time.getId())
         {
             TimePickerDialog  timePickerDialog = new TimePickerDialog(this,
                     new TimePickerDialog.OnTimeSetListener() {
@@ -248,11 +204,19 @@ public class Add_task extends Activity implements View.OnClickListener
 
             timePickerDialog.show();
         }
-        else if( v == save_btn)
+        else if( v.getId() == save_btn.getId())
         {
-            save_task();
+            int task_id = (int)task_dttm.getTag();
+            boolean task_saved = save_task(task_id);
+            //if the task id is 0 then transfer the view to the task list since this is new task added
+            if(task_saved && task_id == 0)
+            {
+                Intent addTask = new Intent(v.getContext(), Task_list.class);
+                addTask.putExtra("task_date",date_str);
+                this.startActivityForResult(addTask, 0);
+            }
         }
-        else if( v == close_btn)
+        else if( v.getId() == close_btn.getId())
         {
             //transfer the view to task list
             Intent addTask = new Intent(v.getContext(), Task_list.class);
@@ -261,6 +225,75 @@ public class Add_task extends Activity implements View.OnClickListener
         }
     }
 
+    public boolean save_task(int id)
+    {
+
+        String _task_dttm = date_str;
+        int _task_priority = Integer.valueOf(task_priority.getText().toString()) ;
+        String _task_description = task_description.getText().toString();
+        String _task_reminder = add_reminder_chk.isChecked()?"yes":"no";
+        String _task_complete = add_task_complete.isChecked()?"yes":"no";
+        String _task_reminder_dttm = (String)add_reminder_date.getText() +" "+(String)add_reminder_time.getText();
+        String return_message = "";
+        boolean validate_flag = true;
+        boolean return_flag = false;
+
+        //validate
+        if(_task_description.length() == 0)
+        {
+            return_message ="Please provide a description!";
+            validate_flag = false;
+        }
+
+        if(validate_flag)
+        {
+            //validate if daily difficulty has been reached
+            int current_difficulty = task_db_helper.get_total_daily_difficulty(_task_dttm, id)  ;
+            boolean y = ( current_difficulty + _task_priority ) > Task.MAX_DAILY_DIFFICULTY;
+            if( ( current_difficulty + _task_priority ) > Task.MAX_DAILY_DIFFICULTY )
+            {
+                return_message ="You have reached the maximum daily difficulty! Please select difficulty lower than "
+                        +(Task.MAX_DAILY_DIFFICULTY - current_difficulty);
+                validate_flag = false;
+            }
+        }
+
+        if(validate_flag)
+        {
+            //create a task obj
+            Task task = new Task(id, _task_dttm,_task_priority, _task_description, _task_complete, _task_reminder, _task_reminder_dttm);
+
+            //if the id is 0, insert a new row in the db else update it
+            if(id == 0)
+            {
+                if(task_db_helper.insertTask(task))
+                {
+                    return_message = "Task added successfully!";
+                    return_flag = true;
+                }
+                else
+                {
+                    return_message = "Something went wrong! Unable to add the task.";
+                }
+            }
+            else
+            {
+                if(task_db_helper.updateTask(task))
+                {
+                    return_message = "Task updated successfully!";
+                    return_flag = true;
+                }
+                else
+                {
+                    return_message = "Something went wrong! Unable to add the task.";
+                }
+            }
+        }
+
+
+        Toast.makeText(getApplicationContext(),return_message,Toast.LENGTH_LONG).show();
+        return return_flag;
+    }
     /*
     When back button is pressed, this transfer the view to task list page
      */

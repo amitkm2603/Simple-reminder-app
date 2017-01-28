@@ -25,6 +25,7 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
     private Activity current_activity;
     private final ArrayList<Task> task_list;
     private String current_date;
+    private TasksDBHelper task_db_helper;
 
 
     public Task_list_adapter(Context _context, Activity _current_activity, ArrayList<Task> _task_list, String _current_date)
@@ -33,6 +34,7 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
         this.current_activity = _current_activity;
         this.task_list = _task_list;
         this.current_date = _current_date;
+        task_db_helper = new TasksDBHelper(_context);
     }
     @Override
     public int getCount() {
@@ -108,12 +110,19 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                 break;
             case R.id.task_list_cell_mark_complete:
                 task_id = Integer.valueOf(String.valueOf(v.getTag()));
-                toogle_mark_complete_confirmation(task_id,((CheckBox) v).isChecked());
+                toogle_mark_complete_confirmation(task_id,((CheckBox) v).isChecked(), (CheckBox) v);
                 break;
         }
     }
 
-    public void toogle_mark_complete_confirmation(final int task_id, final boolean marked) {
+    public void toogle_mark_complete_confirmation(final int task_id, final boolean marked, final CheckBox checkBox) {
+
+        //toggle the cb. manually check/uncheck
+        if(checkBox.isChecked())
+            checkBox.setChecked(false);
+        else
+            checkBox.setChecked(true);
+
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -127,6 +136,7 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                             {
                                 current_activity.recreate();
                                 toast_msg_str ="Task marked as complete!";
+                                checkBox.setChecked(true);
                             }
                             else
                             {
@@ -135,15 +145,33 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                         }
                         else
                         {
-                            if(tasksDBHelper.unmark_task_done(task_id) == 1)
+                                boolean validate_flag = true;
+                                //get the task
+                                Task current_task = task_db_helper.getTaskData(task_id);
+                                //validate if daily difficulty has been reached
+                                int current_difficulty = task_db_helper.get_total_daily_difficulty(current_date, task_id)  ;
+                                boolean y = ( current_difficulty + current_task.getTask_priority() ) > Task.MAX_DAILY_DIFFICULTY;
+                                if( ( current_difficulty + current_task.getTask_priority() ) > Task.MAX_DAILY_DIFFICULTY )
+                                {
+                                    toast_msg_str ="You have reached the maximum daily difficulty! Please select difficulty lower than "
+                                            +(Task.MAX_DAILY_DIFFICULTY - current_difficulty);
+                                    validate_flag = false;
+                                }
+
+                            if(validate_flag)
                             {
-                                current_activity.recreate();
-                                toast_msg_str ="Task marked as incomplete!";
+                                if(tasksDBHelper.unmark_task_done(task_id) == 1)
+                                {
+                                    current_activity.recreate();
+                                    toast_msg_str ="Task marked as incomplete!";
+                                    checkBox.setChecked(false);
+                                }
+                                else
+                                {
+                                    toast_msg_str ="Something went wrong. Unable to mark the task as incomplete!";
+                                }
                             }
-                            else
-                            {
-                                toast_msg_str ="Something went wrong. Unable to mark the task as incomplete!";
-                            }
+
                         }
 
                         Toast.makeText(current_activity, toast_msg_str, Toast.LENGTH_LONG).show();
@@ -151,7 +179,8 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
 
                     case DialogInterface.BUTTON_NEGATIVE:
                         // No button clicked
-                        // do nothing
+                        // toggle the cb
+
                         break;
                 }
             }
