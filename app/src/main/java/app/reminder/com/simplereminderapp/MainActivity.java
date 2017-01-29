@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
     private static final String tag = "MainActivity";
@@ -33,7 +36,8 @@ public class MainActivity extends Activity implements OnClickListener {
     private Activity current_activity;
     private TextView cal_view_show_list;
     private SimpleDateFormat dateFormat;
-
+    public static HashMap<Integer,PendingIntent> alarm_pending_intents = new HashMap<>();
+    private TasksDBHelper task_db_helper = null;
 
     /**
      * Called when the activity is first created.
@@ -41,7 +45,18 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(task_db_helper == null)
+        {
+            task_db_helper = new TasksDBHelper(getApplicationContext());
+        }
+        //set alarms only for first run
+        if(alarm_pending_intents.size() == 0)
+        {
+            setup_alarms();
+        }
+
         Bundle bundle = getIntent().getExtras();
+
         Date date = null;
         if(bundle != null)
         {
@@ -60,6 +75,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         draw_calender(date);
 
+//        Task_notification_receiver.setupAlarm(getApplicationContext());
     }
 
     public void draw_calender(Date date)
@@ -156,4 +172,30 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+     void setup_alarms()
+    {
+        Date date = new Date();
+        String current_date = new SimpleDateFormat("dd-MM-yyyy").format(date);
+        ArrayList<Task> task_list = task_db_helper.get_day_task_list(current_date);
+        alarm_pending_intents.clear();
+        if(task_list.size()>0)
+        {
+
+            for(Task _task: task_list)
+            {
+                try
+                {
+                    date = new SimpleDateFormat("dd-MM-yyyy H:m").parse(_task.getTask_reminder_dttm());
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    continue;
+                }
+
+                PendingIntent pi =  Task_notification_receiver.setupAlarm(getApplicationContext(), _task, date);
+                alarm_pending_intents.put(_task.getId(), pi);
+            }
+        }
+    }
 }
