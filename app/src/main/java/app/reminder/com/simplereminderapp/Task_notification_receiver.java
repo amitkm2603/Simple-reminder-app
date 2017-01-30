@@ -30,13 +30,8 @@ public class Task_notification_receiver extends WakefulBroadcastReceiver {
 
         PendingIntent alarmIntent = getStartPendingIntent(context, task.getTask_description(), task.getId(), task.getTask_priority());
 
-//        Calendar local_cal = Calendar.getInstance(Locale.getDefault());
-//        local_cal.setTime(alarm_dttm);
-//        local_cal.add(Calendar.MINUTE,-2);
-//
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, local_cal.getTimeInMillis(), alarmIntent);
-
         alarmManager.set(AlarmManager.RTC_WAKEUP, alarm_dttm.getTime(), alarmIntent);
+        Log.d("Info", "Alarm added for task: "+ task.getId());
         return alarmIntent;
 
     }

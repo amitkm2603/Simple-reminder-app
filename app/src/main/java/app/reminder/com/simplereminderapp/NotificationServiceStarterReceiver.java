@@ -12,7 +12,6 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 public final class NotificationServiceStarterReceiver extends BroadcastReceiver {
 
@@ -20,37 +19,13 @@ public final class NotificationServiceStarterReceiver extends BroadcastReceiver 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if(action == Task_notification_intent_service.ACTION_MARK_DONE)
+        if(action != null && action.equalsIgnoreCase(Task_notification_intent_service.ACTION_MARK_DONE))
         {
             mark_as_done(context, intent);
         }
         else {
-            //get today's tasks
-            //Calendar local_cal = Calendar.getInstance(Locale.getDefault());
-            TasksDBHelper task_db_helper = new TasksDBHelper(context);
-            Date date = new Date();
-            String current_date = new SimpleDateFormat("dd-MM-yyyy").format(date);
-            ArrayList<Task> task_list = task_db_helper.get_day_task_list(current_date);
-            MainActivity.alarm_pending_intents.clear();
-            if(task_list.size()>0)
-            {
-
-                for(Task _task: task_list)
-                {
-                    try
-                    {
-                        date = new SimpleDateFormat("dd-MM-yyyy H:m").parse(_task.getTask_reminder_dttm());
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                        continue;
-                    }
-
-                    PendingIntent pi =  Task_notification_receiver.setupAlarm(context, _task, date);
-                    MainActivity.alarm_pending_intents.put(_task.getId(), pi);
-                }
-            }
+                //reinitialize the alarms
+                Manage_alarms.setup_alarms(context);
         }
 
     }
@@ -60,21 +35,16 @@ public final class NotificationServiceStarterReceiver extends BroadcastReceiver 
     {
         TasksDBHelper task_db_helper = new TasksDBHelper(context);
         int task_id = current_intent.getIntExtra("task_id",0);
-        Task _task = task_db_helper.getTaskData(task_id);
-//        task_db_helper.mark_task_done(task_id);
-//        Intent addTask = new Intent(context, Task_list.class);
-//        addTask.putExtra("task_date",_task.getTask_dttm());
-        Toast.makeText(context,"marked Complete!",Toast.LENGTH_LONG).show();
-        try{
-            //delete the alarm
-            Task_notification_receiver.deleteAlarm(context, _task ,new SimpleDateFormat("dd-MM-yyyy H:m").parse(_task.getTask_reminder_dttm()) );
-            //delete the object from the map
-            MainActivity.alarm_pending_intents.remove(_task.getId());
-        }
-        catch (Exception e)
+
+        if(task_db_helper.mark_task_done(task_id) == 1)
         {
-            e.printStackTrace();
+            Task _task = task_db_helper.getTaskData(task_id);
+            //delete the alarm
+            Manage_alarms.delete_alarm(context, _task);
+            Toast.makeText(context,"marked Complete!",Toast.LENGTH_LONG).show();
+
         }
+
 
     }
 }

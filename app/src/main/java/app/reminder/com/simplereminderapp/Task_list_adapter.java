@@ -137,6 +137,8 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                                 current_activity.recreate();
                                 toast_msg_str ="Task marked as complete!";
                                 checkBox.setChecked(true);
+                                // if task is marked as complete, remove the alarm - if any
+                                Manage_alarms.delete_alarm(context, tasksDBHelper.getTaskData(task_id));
                             }
                             else
                             {
@@ -150,8 +152,8 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                                 Task current_task = task_db_helper.getTaskData(task_id);
                                 //validate if daily difficulty has been reached
                                 int current_difficulty = task_db_helper.get_total_daily_difficulty(current_date, task_id)  ;
-                                boolean y = ( current_difficulty + current_task.getTask_priority() ) > Task.MAX_DAILY_DIFFICULTY;
-                                if( ( current_difficulty + current_task.getTask_priority() ) > Task.MAX_DAILY_DIFFICULTY )
+                            // add the daily difficulty excluding the task in question and add to it the current difficulty and validate
+                            if( ( current_difficulty + current_task.getTask_priority() ) > Task.MAX_DAILY_DIFFICULTY )
                                 {
                                     toast_msg_str ="You have reached the maximum daily difficulty! Please select difficulty lower than "
                                             +(Task.MAX_DAILY_DIFFICULTY - current_difficulty);
@@ -165,6 +167,8 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                                     current_activity.recreate();
                                     toast_msg_str ="Task marked as incomplete!";
                                     checkBox.setChecked(false);
+                                    // if task is marked as complete, add the alarm
+                                    Manage_alarms.add_alarm(context, tasksDBHelper.getTaskData(task_id));
                                 }
                                 else
                                 {
@@ -208,10 +212,14 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                     case DialogInterface.BUTTON_POSITIVE:
                         // Yes button clicked
                       TasksDBHelper tasksDBHelper = new TasksDBHelper(context);
+                                //delete the task
+                        Task _task =  tasksDBHelper.getTaskData(task_id);
                                if(tasksDBHelper.deleteTask(task_id) == 1)
                                {
                                    current_activity.recreate();
                                    Toast.makeText(current_activity, "Task deleted successfully!", Toast.LENGTH_LONG).show();
+                                   //delete the notification alarm as well
+                                   Manage_alarms.delete_alarm(context,_task);
                                }
                         else
                                {

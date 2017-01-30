@@ -46,7 +46,32 @@ public class TasksDBHelper extends SQLiteOpenHelper
 
     }
 
+    public int get_last_insert_id()
+    {
+        String sql = "SELECT last_insert_rowid() as task_id";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = null;
+        int task_id = 0;
+        try{
+            res = db.rawQuery( sql, null );
 
+            if(res.getCount() > 0) {
+
+                res.moveToFirst();
+                task_id = res.isNull(res.getColumnIndex("task_id"))? 0: Integer.valueOf(res.getString(res.getColumnIndex("task_id")));
+            }
+
+            return task_id;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return task_id;
+        }
+        finally {
+
+            res.close();
+        }
+    }
     public boolean insertTask(Task task)
         {
 
@@ -181,6 +206,40 @@ public class TasksDBHelper extends SQLiteOpenHelper
         }
         return array_list;
     }
+
+    /*
+    * Get list of tasks with alarms for a given day which are not completed and for which the reminder is set to yes
+     */
+    public ArrayList<Task> get_pending_alarm_task_list(String task_dttm_str) {
+        ArrayList<Task> array_list = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+TASK_TABLE+" where "+TASK_REMINDER_DTTM+" like  '%"+task_dttm_str+"%' " +
+                " and "+TASK_COMPLETE+" = ? and "+TASK_REMINDER+" = ?" +
+                " ORDER BY case "+TASK_COMPLETE+"\n" +
+                " when \"yes\" then 3\n" +
+                " when \"no\" then 2\n" +
+                " when NULL then 1\n" +
+                " end asc, "+TASK_PRIORITY+" DESC", new String[]{"no", "yes"} );
+
+        res.moveToFirst();
+
+        while(res.isAfterLast() == false){
+            Task task_temp = new Task(
+                    Integer.valueOf(res.getString(res.getColumnIndex(TASK_ID))),
+                    res.getString(res.getColumnIndex(TASK_DTTM)),
+                    Integer.valueOf(res.getString(res.getColumnIndex(TASK_PRIORITY))),
+                    res.getString(res.getColumnIndex(TASK_DESCRIPTION)),
+                    res.getString(res.getColumnIndex(TASK_COMPLETE)),
+                    res.getString(res.getColumnIndex(TASK_REMINDER)),
+                    res.getString(res.getColumnIndex(TASK_REMINDER_DTTM))
+            );
+            array_list.add(task_temp);
+            res.moveToNext();
+        }
+        return array_list;
+    }
+
 
     public int mark_task_done(int task_id)
     {

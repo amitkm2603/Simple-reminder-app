@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -45,11 +46,23 @@ public class Add_task extends Activity implements View.OnClickListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bundle bundle = getIntent().getExtras();
-        date_str = bundle.getString("task_date");
         task_db_helper = new TasksDBHelper(this);
-        generate_view(date_str, bundle.getInt("task_id"));
+        String action = getIntent().getAction();
+        int task_id;
+        if(action != null && action.equalsIgnoreCase(Task_notification_intent_service.VIEW_TASK))
+        {
+            task_id = getIntent().getIntExtra("task_id",0);
+            date_str = task_db_helper.getTaskData(task_id).getTask_dttm();
+            generate_view(date_str, task_id);
+        }
+        else
+        {
+            Bundle bundle = getIntent().getExtras();
+            date_str = bundle.getString("task_date");
+            task_id = bundle.getInt("task_id");
+        }
+
+        generate_view(date_str, task_id);
 
     }
     public void generate_view(String date_str, int task_id) {
@@ -183,7 +196,7 @@ public class Add_task extends Activity implements View.OnClickListener
                     else
                         month = ""+(monthOfYear + 1);
 
-                    add_reminder_date.setText(year+"-"+month+"-"+dayOfMonth);
+                    add_reminder_date.setText(dayOfMonth+"-"+month+"-"+year);
                 }
             }, local_calendar.get(Calendar.YEAR), local_calendar.get(Calendar.MONTH), local_calendar.get(Calendar.DATE));
             mdiDialog.show();
@@ -197,7 +210,19 @@ public class Add_task extends Activity implements View.OnClickListener
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay,
                                               int minute) {
-                            add_reminder_time.setText(hourOfDay+":"+minute);
+                            String hourOfDay_str ;
+                            if(hourOfDay < 10)
+                                hourOfDay_str = "0" + hourOfDay;
+                            else
+                                hourOfDay_str = String.valueOf(hourOfDay);
+
+                            String minute_str ;
+                            if(minute < 10)
+                                minute_str = "0" + minute;
+                            else
+                                minute_str = String.valueOf(minute);
+
+                            add_reminder_time.setText(hourOfDay_str+":"+minute_str);
 
                         }
                     }, local_calendar.get(Calendar.HOUR_OF_DAY), local_calendar.get(Calendar.MINUTE), true);
@@ -234,9 +259,9 @@ public class Add_task extends Activity implements View.OnClickListener
         String _task_reminder = add_reminder_chk.isChecked()?"yes":"no";
         String _task_complete = add_task_complete.isChecked()?"yes":"no";
         String _task_reminder_dttm = (String)add_reminder_date.getText() +" "+(String)add_reminder_time.getText();
-        String return_message = "";
-        boolean validate_flag = true;
-        boolean return_flag = false;
+        String return_message = ""; //message displayed at the end of the function as Toast
+        boolean validate_flag = true; //flag to determine if the input has been validated
+        boolean return_flag = false; //boolean value that is returned at the end of the function
 
         //validate
         if(_task_description.length() == 0)
@@ -245,7 +270,8 @@ public class Add_task extends Activity implements View.OnClickListener
             validate_flag = false;
         }
 
-        if(validate_flag)
+        //validate the difficulty only if its validated previously and the task complete is set as no
+        if(validate_flag && _task_complete.equals("no"))
         {
             //validate if daily difficulty has been reached
             int current_difficulty = task_db_helper.get_total_daily_difficulty(_task_dttm, id)  ;
@@ -270,6 +296,27 @@ public class Add_task extends Activity implements View.OnClickListener
                 {
                     return_message = "Task added successfully!";
                     return_flag = true;
+
+                    //set the alarm if task reminder is yes
+                    if(_task_reminder.equalsIgnoreCase("yes"))
+                    {
+                        int generated_task_id = task_db_helper.get_last_insert_id();
+                        if(generated_task_id != 0)
+                        {
+                            task = task_db_helper.getTaskData(generated_task_id);
+                            if(task != null)
+                            {
+                                Manage_alarms.add_alarm(getApplicationContext(),task);
+                            }
+                            else
+                            {
+                                Log.d("Warning", "Task is null. Unable to add the alarm");
+                            }
+
+                        }
+
+                    }
+
                 }
                 else
                 {
@@ -278,10 +325,16 @@ public class Add_task extends Activity implements View.OnClickListener
             }
             else
             {
+                //update the task
                 if(task_db_helper.updateTask(task))
                 {
                     return_message = "Task updated successfully!";
                     return_flag = true;
+                    //if task reminder is yes the set the alarm else delete it
+                    if(task.getTask_reminder().equalsIgnoreCase("yes") && task.getTask_complete().equalsIgnoreCase("no"))
+                        Manage_alarms.add_alarm(getApplicationContext(),task);
+                    else
+                        Manage_alarms.delete_alarm(getApplicationContext(),task);
                 }
                 else
                 {

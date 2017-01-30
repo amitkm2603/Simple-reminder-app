@@ -70,7 +70,7 @@ public class Task_notification_intent_service extends IntentService {
         builder.setContentTitle("Task Reminder!")
                 .setAutoCancel(true)
                 .setColor(getResources().getColor(R.color.background_material_dark))
-                .setContentText("This notification has been triggered by Notification Service")
+                .setContentText("Task Difficulty "+difficulty)
                 .setSmallIcon(R.drawable.app_icon);
 
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
@@ -79,7 +79,7 @@ public class Task_notification_intent_service extends IntentService {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 task_id,
-                new Intent(this, MainActivity.class).putExtra("task_id",task_id).setAction(VIEW_TASK),
+                new Intent(this, Add_task.class).putExtra("task_id",task_id).setAction(VIEW_TASK),
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
 
