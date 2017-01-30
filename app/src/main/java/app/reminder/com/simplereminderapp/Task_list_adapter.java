@@ -115,6 +115,9 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
         }
     }
 
+    /*
+        handle mark-unmark task complete
+     */
     public void toogle_mark_complete_confirmation(final int task_id, final boolean marked, final CheckBox checkBox) {
 
         //toggle the cb. manually check/uncheck
@@ -123,6 +126,8 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
         else
             checkBox.setChecked(true);
 
+        //click listeners. For unmarking as complete - it checks if it will violate the daily limit or not
+        //it also sets up the notification alarms
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -205,6 +210,9 @@ public class Task_list_adapter extends BaseAdapter implements View.OnClickListen
                 .setNegativeButton("No", dialogClickListener).show();
     }
 
+    /*
+        Handle delete task
+     */
     public void delete_confirmation(final int task_id) {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

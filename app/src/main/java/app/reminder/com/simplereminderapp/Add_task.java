@@ -49,11 +49,12 @@ public class Add_task extends Activity implements View.OnClickListener
         task_db_helper = new TasksDBHelper(this);
         String action = getIntent().getAction();
         int task_id;
+        //handle action coming from notification
+        //get the task id and date
         if(action != null && action.equalsIgnoreCase(Task_notification_intent_service.VIEW_TASK))
         {
             task_id = getIntent().getIntExtra("task_id",0);
             date_str = task_db_helper.getTaskData(task_id).getTask_dttm();
-            generate_view(date_str, task_id);
         }
         else
         {
@@ -204,6 +205,8 @@ public class Add_task extends Activity implements View.OnClickListener
 
         else if( v.getId() == add_reminder_time.getId())
         {
+            //creating time picker dialog
+            //http://stackoverflow.com/questions/16541258/android-timepickerdialog-timepickerdialog-ontimesetlistener
             TimePickerDialog  timePickerDialog = new TimePickerDialog(this,
                     new TimePickerDialog.OnTimeSetListener() {
 
@@ -250,6 +253,7 @@ public class Add_task extends Activity implements View.OnClickListener
         }
     }
 
+    //save the task to database
     public boolean save_task(int id)
     {
 
@@ -263,27 +267,27 @@ public class Add_task extends Activity implements View.OnClickListener
         boolean validate_flag = true; //flag to determine if the input has been validated
         boolean return_flag = false; //boolean value that is returned at the end of the function
 
-        //validate
+        //validate the input
         if(_task_description.length() == 0)
         {
             return_message ="Please provide a description!";
             validate_flag = false;
         }
 
-        //validate the difficulty only if its validated previously and the task complete is set as no
+        //validate the difficulty only if the input has been successfully validated and the task complete is set as no
         if(validate_flag && _task_complete.equals("no"))
         {
-            //validate if daily difficulty has been reached
+            //verify if daily difficulty has been reached
             int current_difficulty = task_db_helper.get_total_daily_difficulty(_task_dttm, id)  ;
-            boolean y = ( current_difficulty + _task_priority ) > Task.MAX_DAILY_DIFFICULTY;
             if( ( current_difficulty + _task_priority ) > Task.MAX_DAILY_DIFFICULTY )
             {
-                return_message ="You have reached the maximum daily difficulty! Please select difficulty lower than "
+                return_message ="You have reached the maximum daily difficulty! Please select difficulty lower than or equal to "
                         +(Task.MAX_DAILY_DIFFICULTY - current_difficulty);
                 validate_flag = false;
             }
         }
 
+        //if input has been validated, difficulty cap checked, save the task
         if(validate_flag)
         {
             //create a task obj

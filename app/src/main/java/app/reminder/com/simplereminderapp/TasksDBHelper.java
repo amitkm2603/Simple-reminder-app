@@ -45,7 +45,10 @@ public class TasksDBHelper extends SQLiteOpenHelper
         }
 
     }
-
+    /*
+    Returns the last inserted auto-increment key.
+    In this case, it is the primary key: task_id as it is automatically created by the database
+     */
     public int get_last_insert_id()
     {
         String sql = "SELECT last_insert_rowid() as task_id";
@@ -72,6 +75,7 @@ public class TasksDBHelper extends SQLiteOpenHelper
             res.close();
         }
     }
+    //insert row in the task table
     public boolean insertTask(Task task)
         {
 
@@ -179,7 +183,9 @@ public class TasksDBHelper extends SQLiteOpenHelper
         }
     }
 
-
+    /*
+    Returns full list of tasks for a given day
+     */
     public ArrayList<Task> get_day_task_list(String task_dttm_str) {
         ArrayList<Task> array_list = new ArrayList<>();
 
@@ -208,7 +214,7 @@ public class TasksDBHelper extends SQLiteOpenHelper
     }
 
     /*
-    * Get list of tasks with alarms for a given day which are not completed and for which the reminder is set to yes
+    * Get list of tasks with alarms for the given day which are not completed and for which the reminder is set to yes
      */
     public ArrayList<Task> get_pending_alarm_task_list(String task_dttm_str) {
         ArrayList<Task> array_list = new ArrayList<>();
@@ -240,7 +246,9 @@ public class TasksDBHelper extends SQLiteOpenHelper
         return array_list;
     }
 
-
+    /*
+    mark a task as complete
+     */
     public int mark_task_done(int task_id)
     {
         int rows_updated = 0;
@@ -256,7 +264,9 @@ public class TasksDBHelper extends SQLiteOpenHelper
         }
         return rows_updated;
     }
-
+    /*
+    mark a task as incomplete
+     */
     public  int unmark_task_done(int task_id)
     {
         int rows_updated = 0;

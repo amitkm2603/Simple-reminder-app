@@ -1,5 +1,5 @@
 package app.reminder.com.simplereminderapp;
-
+//http://stackoverflow.com/questions/17673746/start-alarmmanager-if-device-is-rebooted
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
-import android.util.Log;
-import android.widget.Toast;
 
 public class Task_notification_intent_service extends IntentService {
 
@@ -66,8 +64,9 @@ public class Task_notification_intent_service extends IntentService {
         int task_id = original_intent.getIntExtra("task_id",0);
         int difficulty = original_intent.getIntExtra("difficulty",0);
 
+        //create the notification
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("Task Reminder!")
+        builder.setContentTitle("You have a pending task!")
                 .setAutoCancel(true)
                 .setColor(getResources().getColor(R.color.background_material_dark))
                 .setContentText("Task Difficulty "+difficulty)
@@ -90,6 +89,7 @@ public class Task_notification_intent_service extends IntentService {
         builder.addAction(0, "Mark as done", pIntent);
 
         builder.setDeleteIntent(Task_notification_receiver.getDeleteIntent(this,text_str,task_id,difficulty));
+        //display the notification
         final NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(task_id, builder.build());
     }

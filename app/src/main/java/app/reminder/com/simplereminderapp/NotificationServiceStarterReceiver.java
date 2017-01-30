@@ -9,19 +9,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
 public final class NotificationServiceStarterReceiver extends BroadcastReceiver {
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        //handle the mark as done action from the notification
         if(action != null && action.equalsIgnoreCase(Task_notification_intent_service.ACTION_MARK_DONE))
         {
-            mark_as_done(context, intent);
+                mark_as_done(context, intent);
         }
         else {
                 //reinitialize the alarms

@@ -1,5 +1,7 @@
 package app.reminder.com.simplereminderapp;
-
+/*
+ *  This class is used to manage alarm notifications
+ */
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,10 +16,12 @@ import java.util.HashMap;
 
 
 public class Manage_alarms {
-    public static HashMap<Integer,PendingIntent> alarm_pending_intents = new HashMap<>();
+    static HashMap<Integer,PendingIntent> alarm_pending_intents = new HashMap<>();
+    //mapping between task id and pending intents for the alarm notifications
     private static TasksDBHelper task_db_helper = null;
 
-    public static void setup_alarms(Context context)
+    //set up all alarms with alarm date as today
+     static void setup_alarms(Context context)
     {
         if(task_db_helper == null)
             task_db_helper = new TasksDBHelper(context);
@@ -58,7 +62,7 @@ public class Manage_alarms {
             return;
 
         //check if task is already added
-        if(alarm_pending_intents.get(_task.getId()) instanceof PendingIntent)
+        if(alarm_pending_intents.get(_task.getId()) != null)
         {
             //if already present, remove the alarm as its an update request
             delete_alarm(context,_task);
@@ -85,7 +89,7 @@ public class Manage_alarms {
     public static void delete_alarm(Context context, Task _task)
     {
         PendingIntent deleteIntent = alarm_pending_intents.get(_task.getId());
-        if( deleteIntent instanceof PendingIntent)
+        if( deleteIntent != null)
         {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(deleteIntent); //remove the alarm from the alarm manager

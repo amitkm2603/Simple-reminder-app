@@ -66,9 +66,8 @@ public class MainActivity extends Activity implements OnClickListener {
             }
         }
 
+        //create the UI
         draw_calender(date);
-
-//        Task_notification_receiver.setupAlarm(getApplicationContext());
     }
 
     public void draw_calender(Date date)
@@ -155,7 +154,7 @@ public class MainActivity extends Activity implements OnClickListener {
             calendar_adapter.notifyDataSetChanged();
             calendar_view.setAdapter(calendar_adapter);
         }
-
+        //display list with today's tasks
         if(view_id.getId() == cal_view_show_list.getId())
         {
             Intent addTask = new Intent(view_id.getContext(), Task_list.class);

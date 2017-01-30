@@ -26,6 +26,7 @@ public class Task_list extends Activity implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
+        //extract the task date from previous activity
         date_str = bundle.getString("task_date");
         task_db_helper = new TasksDBHelper(this);
         generate_task_list(date_str);
@@ -35,16 +36,19 @@ public class Task_list extends Activity implements View.OnClickListener
     {
         setContentView(R.layout.task_list);
         ArrayList<Task> task_list = task_db_helper.get_day_task_list(date_str);
+
         Button add_task_btn = (Button)this.findViewById(R.id.add_task_btn);
         Button back_to_cal_btn = (Button)this.findViewById(R.id.back_to_cal_btn);
+
         add_task_btn.setOnClickListener(this);
         back_to_cal_btn.setOnClickListener(this);
+
         current_date = (TextView)this.findViewById(R.id.task_list_date);
         current_date.setText("Showing task list for: "+date_str);
 
         if(task_list.size() == 0)
         {
-
+            //do nothing
         }
         else
         {
@@ -117,22 +121,26 @@ public class Task_list extends Activity implements View.OnClickListener
 
             ArrayList<String> probable_dates = new ArrayList<>();
             int max_count = 1;
+            //change the size to set no of suggested dates
             while(probable_dates.size()<3)
             {
+                //search for next 60 days at most
                 if(max_count == 60)
                     break;
                 try {
-                    Date current_date_temp = dateFormat.parse(check_date);
+
+                    Date current_date_temp = new Date();
                     Calendar c = Calendar.getInstance();
                     c.setTime(current_date_temp);
+                    //increment the date by max_count
                     c.add(Calendar.DATE,max_count);
                     String temp_string = dateFormat.format(c.getTime());
-
+                    //check db if daily difficulty cap has been reached
                     if(task_db_helper.get_total_daily_difficulty(temp_string, 0) < Task.MAX_DAILY_DIFFICULTY)
                     {
                         probable_dates.add(temp_string);
                     }
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 finally {
@@ -153,7 +161,8 @@ public class Task_list extends Activity implements View.OnClickListener
 
             }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            //display the dates as an alert
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(alert_message)
                     .setNeutralButton("Ok",null).show();
             return false;

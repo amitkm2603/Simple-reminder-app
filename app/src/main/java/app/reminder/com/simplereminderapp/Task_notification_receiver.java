@@ -1,20 +1,13 @@
 package app.reminder.com.simplereminderapp;
+//http://stackoverflow.com/questions/17673746/start-alarmmanager-if-device-is-rebooted
 
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
-import android.widget.Toast;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 
 public class Task_notification_receiver extends WakefulBroadcastReceiver {
@@ -36,18 +29,6 @@ public class Task_notification_receiver extends WakefulBroadcastReceiver {
 
     }
 
-    public static void deleteAlarm(Context context, Task task, Date alarm_dttm) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        PendingIntent deleteIntent = getDeleteIntent(context, task.getTask_description(), task.getId(), task.getTask_priority());
-        alarmManager.cancel(deleteIntent); //remove the alarm from the alarm manager
-
-        //remove the notification from the notification bar
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setDeleteIntent(deleteIntent);
-        final NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(task.getId(), builder.build());
-    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
